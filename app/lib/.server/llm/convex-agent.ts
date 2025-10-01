@@ -15,7 +15,7 @@ import { deployTool } from 'chef-agent/tools/deploy';
 import { viewTool } from 'chef-agent/tools/view';
 import type { ConvexToolSet } from 'chef-agent/types';
 import { npmInstallTool } from 'chef-agent/tools/npmInstall';
-import type { Tracer } from '~/lib/.server/chat';
+import type { Tracer, UserApiKey } from '~/lib/.server/chat';
 import { editTool } from 'chef-agent/tools/edit';
 import { captureException, captureMessage } from '@sentry/remix';
 import type { SystemPromptOptions } from 'chef-agent/types';
@@ -46,7 +46,7 @@ export async function convexAgent(args: {
   tracer: Tracer | null;
   modelProvider: ModelProvider;
   modelChoice: string | undefined;
-  userApiKey: string | undefined;
+  userApiKey: UserApiKey | undefined;
   shouldDisableTools: boolean;
   recordUsageCb: (
     lastMessage: Message | undefined,
@@ -89,6 +89,7 @@ export async function convexAgent(args: {
     openaiProxyEnabled: getEnv('OPENAI_PROXY_ENABLED') == '1',
     usingOpenAi: modelProvider == 'OpenAI',
     usingGoogle: modelProvider == 'Google',
+    usingOpenRouter: modelProvider == 'OpenRouter',
     resendProxyEnabled: getEnv('RESEND_PROXY_ENABLED') == '1',
     enableResend: featureFlags.enableResend,
   };

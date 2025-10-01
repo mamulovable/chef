@@ -10,7 +10,7 @@ import type { Doc } from '@convex/_generated/dataModel';
 import { captureMessage } from '@sentry/remix';
 import { useLaunchDarkly } from '~/lib/hooks/useLaunchDarkly';
 
-export type ModelProvider = 'openai' | 'google' | 'xai' | 'anthropic' | 'auto';
+export type ModelProvider = 'openai' | 'google' | 'xai' | 'anthropic' | 'auto' | 'openrouter';
 
 export function displayModelProviderName(provider: ModelProvider) {
   switch (provider) {
@@ -24,6 +24,8 @@ export function displayModelProviderName(provider: ModelProvider) {
       return 'Anthropic';
     case 'auto':
       return 'Anthropic';
+    case 'openrouter':
+      return 'OpenRouter';
     default: {
       const exhaustiveCheck: never = provider;
       throw new Error(`Unknown model provider: ${exhaustiveCheck}`);
@@ -46,6 +48,7 @@ const providerToIcon: Record<string, React.ReactNode> = {
   openai: svgIcon('/icons/openai.svg'),
   anthropic: svgIcon('/icons/claude.svg'),
   google: svgIcon('/icons/gemini.svg'),
+  openrouter: svgIcon('/icons/openrouter.svg'),
   xai: (
     <svg width="16" height="16" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -209,6 +212,9 @@ const keyForProvider = (apiKeys: Doc<'convexMembers'>['apiKey'], provider: Model
     } else {
       return apiKeys?.value;
     }
+  }
+  if (provider === 'openrouter') {
+    return apiKeys?.openrouter;
   }
   return apiKeys?.[provider];
 };

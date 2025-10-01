@@ -11,6 +11,14 @@ import { Tooltip } from '@ui/Tooltip';
 import { captureException } from '@sentry/remix';
 import { Spinner } from '@ui/Spinner';
 import { useDebounce } from '@uidotdev/usehooks';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@ui/Select';
+import type { Doc } from '@convex/_generated/dataModel';
+
+const openrouterModels = [
+  'moonshotai/kimi-k2:free',
+  'qwen/qwen3-coder:free',
+  'deepseek/deepseek-chat-v3.1:free',
+];
 
 export function ApiKeyCard() {
   const convex = useConvex();
@@ -26,6 +34,8 @@ export function ApiKeyCard() {
           openai: apiKey?.openai,
           xai: apiKey?.xai,
           google: apiKey?.google,
+          openrouter: apiKey?.openrouter,
+          openrouterModel: apiKey?.openrouterModel,
         },
       });
       toast.success('Preference updated.', { id: value ? 'always' : 'quotaExhausted' });
@@ -35,7 +45,8 @@ export function ApiKeyCard() {
     }
   };
 
-  const hasAnyKey = apiKey && (apiKey.value || apiKey.openai || apiKey.xai || apiKey.google);
+  const hasAnyKey =
+    apiKey && (apiKey.value || apiKey.openai || apiKey.xai || apiKey.google || apiKey.openrouter);
 
   const validateAnthropicApiKey = async (apiKey: string) => {
     return await convex.action(api.apiKeys.validateAnthropicApiKey, {
@@ -57,6 +68,12 @@ export function ApiKeyCard() {
 
   const validateXaiApiKey = async (apiKey: string) => {
     return await convex.action(api.apiKeys.validateXaiApiKey, {
+      apiKey,
+    });
+  };
+
+  const validateOpenRouterApiKey = async (apiKey: string) => {
+    return await convex.action(api.apiKeys.validateOpenRouterApiKey, {
       apiKey,
     });
   };
@@ -95,6 +112,7 @@ export function ApiKeyCard() {
             keyType="anthropic"
             value={apiKey?.value || ''}
             onValidate={validateAnthropicApiKey}
+            apiKeyData={apiKey}
           />
 
           <ApiKeyItem
@@ -113,6 +131,7 @@ export function ApiKeyCard() {
             keyType="google"
             value={apiKey?.google || ''}
             onValidate={validateGoogleApiKey}
+            apiKeyData={apiKey}
           />
 
           <ApiKeyItem
@@ -131,6 +150,7 @@ export function ApiKeyCard() {
             keyType="openai"
             value={apiKey?.openai || ''}
             onValidate={validateOpenaiApiKey}
+            apiKeyData={apiKey}
           />
 
           <ApiKeyItem
@@ -149,6 +169,26 @@ export function ApiKeyCard() {
             keyType="xai"
             value={apiKey?.xai || ''}
             onValidate={validateXaiApiKey}
+            apiKeyData={apiKey}
+          />
+
+          <ApiKeyItem
+            label="OpenRouter API key"
+            description={
+              <a
+                href="https://openrouter.ai/keys"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-content-link hover:underline"
+              >
+                See instructions for generating an OpenRouter API key
+              </a>
+            }
+            isLoading={apiKey === undefined}
+            keyType="openrouter"
+            value={apiKey?.openrouter || ''}
+            onValidate={validateOpenRouterApiKey}
+            apiKeyData={apiKey}
           />
         </div>
       </div>
@@ -156,7 +196,7 @@ export function ApiKeyCard() {
   );
 }
 
-type KeyType = 'anthropic' | 'google' | 'openai' | 'xai';
+type KeyType = 'anthropic' | 'google' | 'openai' | 'xai' | 'openrouter';
 
 function ApiKeyItem({
   label,
@@ -165,6 +205,7 @@ function ApiKeyItem({
   keyType,
   value,
   onValidate,
+  apiKeyData,
 }: {
   label: string;
   description: React.ReactNode;
@@ -172,13 +213,21 @@ function ApiKeyItem({
   keyType: KeyType;
   value: string;
   onValidate: (key: string) => Promise<boolean>;
+  apiKeyData: Doc<'convexMembers'>['apiKey'] | null | undefined;
 }) {
   const convex = useConvex();
   const [showKey, setShowKey] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [newKeyValue, setNewKeyValue] = useState('');
+  const [selectedModel, setSelectedModel] = useState(apiKeyData?.openrouterModel || openrouterModels[0]);
   const [validationError, setValidationError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (apiKeyData?.openrouterModel) {
+      setSelectedModel(apiKeyData.openrouterModel);
+    }
+  }, [apiKeyData?.openrouterModel]);
 
   // Debounce key input for validation (300ms delay)
   const debouncedKeyValue = useDebounce(newKeyValue, 300);
@@ -241,6 +290,10 @@ function ApiKeyItem({
           await convex.mutation(api.apiKeys.deleteXaiApiKeyForCurrentMember);
           toast.success('xAI API key removed', { id: 'xai-removed' });
           break;
+        case 'openrouter':
+          await convex.mutation(api.apiKeys.deleteOpenRouterApiKeyForCurrentMember);
+          toast.success('OpenRouter API key removed', { id: 'openrouter-removed' });
+          break;
       }
     } catch (error) {
       captureException(error);
@@ -259,12 +312,14 @@ function ApiKeyItem({
       // Get the current API key data
       const apiKey = await convex.query(api.apiKeys.apiKeyForCurrentMember);
 
-      const apiKeyMutation = {
+      const apiKeyMutation: Doc<'convexMembers'>['apiKey'] = {
         preference: apiKey?.preference || ('quotaExhausted' as 'always' | 'quotaExhausted'),
         value: apiKey?.value || undefined,
         openai: apiKey?.openai || undefined,
         xai: apiKey?.xai || undefined,
         google: apiKey?.google || undefined,
+        openrouter: apiKey?.openrouter || undefined,
+        openrouterModel: apiKey?.openrouterModel || undefined,
       };
 
       switch (keyType) {
@@ -279,6 +334,10 @@ function ApiKeyItem({
           break;
         case 'xai':
           apiKeyMutation.xai = cleanApiKey(newKeyValue);
+          break;
+        case 'openrouter':
+          apiKeyMutation.openrouter = cleanApiKey(newKeyValue);
+          apiKeyMutation.openrouterModel = selectedModel;
           break;
       }
 
@@ -344,8 +403,6 @@ function ApiKeyItem({
                 value={newKeyValue}
                 onChange={handleKeyValueChange}
                 placeholder={`Enter your ${label}`}
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-expect-error Unclear issue with typing of design system
                 action={(): void => {
                   setShowKey(!showKey);
                 }}
@@ -355,6 +412,23 @@ function ApiKeyItem({
                 error={newKeyValue.trim() && validationError ? validationError : undefined}
               />
             </div>
+            {keyType === 'openrouter' && (
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm text-content-secondary">Model</label>
+                  <Select value={selectedModel} onValueChange={setSelectedModel}>
+                    <SelectTrigger className="w-80">
+                      <SelectValue placeholder="Select a model" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {openrouterModels.map((model) => (
+                        <SelectItem key={model} value={model}>
+                          {model}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
             <div className="flex gap-2">
               <Button type="submit" disabled={isSaving || !newKeyValue.trim()} icon={isSaving && <Spinner />}>
                 Save

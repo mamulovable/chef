@@ -16,6 +16,16 @@ const logger = createScopedLogger('api.chat');
 
 export type Tracer = ReturnType<typeof WebTracerProvider.prototype.getTracer>;
 
+export type UserApiKey = {
+  preference: 'always' | 'quotaExhausted';
+  value?: string;
+  openai?: string;
+  xai?: string;
+  google?: string;
+  openrouter?: string;
+  openrouterModel?: string;
+};
+
 export async function chatAction({ request }: ActionFunctionArgs) {
   const AXIOM_API_TOKEN = getEnv('AXIOM_API_TOKEN');
   const AXIOM_API_URL = getEnv('AXIOM_API_URL');
@@ -61,9 +71,7 @@ export async function chatAction({ request }: ActionFunctionArgs) {
     deploymentName: string | undefined;
     modelProvider: ModelProvider;
     modelChoice: string | undefined;
-    userApiKey:
-      | { preference: 'always' | 'quotaExhausted'; value?: string; openai?: string; xai?: string; google?: string }
-      | undefined;
+    userApiKey: UserApiKey | undefined;
     shouldDisableTools: boolean;
     recordRawPromptsForDebugging?: boolean;
     collapsedMessages: boolean;
@@ -125,27 +133,13 @@ export async function chatAction({ request }: ActionFunctionArgs) {
     }
   }
 
-  let userApiKey: string | undefined;
-  if (useUserApiKey) {
-    if (body.modelProvider === 'Anthropic' || body.modelProvider === 'Bedrock') {
-      userApiKey = body.userApiKey?.value;
-      body.modelProvider = 'Anthropic';
-    } else if (body.modelProvider === 'OpenAI') {
-      userApiKey = body.userApiKey?.openai;
-    } else if (body.modelProvider === 'XAI') {
-      userApiKey = body.userApiKey?.xai;
-    } else {
-      userApiKey = body.userApiKey?.google;
-    }
-
-    if (!userApiKey) {
-      return new Response(
-        JSON.stringify({ code: 'missing-api-key', error: `Tried to use missing ${body.modelProvider} API key.` }),
-        {
-          status: 402,
-        },
-      );
-    }
+  if (useUserApiKey && !hasApiKeySetForProvider(body.userApiKey, body.modelProvider)) {
+    return new Response(
+      JSON.stringify({ code: 'missing-api-key', error: `Tried to use missing ${body.modelProvider} API key.` }),
+      {
+        status: 402,
+      },
+    );
   }
   logger.info(`Using model provider: ${body.modelProvider} (user API key: ${useUserApiKey})`);
 
@@ -153,7 +147,7 @@ export async function chatAction({ request }: ActionFunctionArgs) {
     lastMessage: Message | undefined,
     finalGeneration: { usage: LanguageModelUsage; providerMetadata?: ProviderMetadata },
   ) => {
-    if (!userApiKey && getEnv('DISABLE_USAGE_REPORTING') !== '1') {
+    if (!useUserApiKey && getEnv('DISABLE_USAGE_REPORTING') !== '1') {
       await recordUsage(
         PROVISION_HOST,
         token,
@@ -177,13 +171,13 @@ export async function chatAction({ request }: ActionFunctionArgs) {
       modelProvider: body.modelProvider,
       // Only set the requested model choice if we're using a user API key or Claude 4 Sonnet/GPT-5
       modelChoice:
-        userApiKey ||
+        useUserApiKey ||
         body.modelChoice === 'claude-sonnet-4-0' ||
         body.modelChoice === 'gpt-5' ||
         body.modelChoice === 'claude-sonnet-4-5'
           ? body.modelChoice
           : undefined,
-      userApiKey,
+      userApiKey: body.userApiKey,
       shouldDisableTools: body.shouldDisableTools,
       recordUsageCb,
       recordRawPromptsForDebugging: !!recordRawPromptsForDebugging,
@@ -222,9 +216,7 @@ export async function chatAction({ request }: ActionFunctionArgs) {
 
 // Returns whether or not the user has an API key set for a given provider
 function hasApiKeySetForProvider(
-  userApiKey:
-    | { preference: 'always' | 'quotaExhausted'; value?: string; openai?: string; xai?: string; google?: string }
-    | undefined,
+  userApiKey: UserApiKey | undefined,
   provider: ModelProvider,
 ) {
   switch (provider) {
@@ -236,6 +228,8 @@ function hasApiKeySetForProvider(
       return userApiKey?.xai !== undefined;
     case 'Google':
       return userApiKey?.google !== undefined;
+    case 'OpenRouter':
+      return userApiKey?.openrouter !== undefined;
     default:
       return false;
   }

@@ -161,6 +161,32 @@ export const deleteGoogleApiKeyForCurrentMember = mutation({
   },
 });
 
+export const deleteOpenRouterApiKeyForCurrentMember = mutation({
+  args: {},
+  returns: v.null(),
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new ConvexError({ code: "NotAuthorized", message: "Unauthorized" });
+    }
+
+    const existingMember = await getMemberByConvexMemberIdQuery(ctx, identity).first();
+
+    if (!existingMember) {
+      throw new ConvexError({ code: "NotAuthorized", message: "Unauthorized" });
+    }
+    if (!existingMember.apiKey) {
+      return;
+    }
+    await ctx.db.patch(existingMember._id, {
+      apiKey: {
+        ...existingMember.apiKey,
+        openrouter: undefined,
+      },
+    });
+  },
+});
+
 export const validateAnthropicApiKey = action({
   args: {
     apiKey: v.string(),
@@ -176,6 +202,27 @@ export const validateAnthropicApiKey = action({
       headers: {
         "Content-Type": "application/json",
         "x-api-key": args.apiKey,
+      },
+    });
+
+    if (response.status === 401) {
+      return false;
+    }
+    return true;
+  },
+});
+
+export const validateOpenRouterApiKey = action({
+  args: { apiKey: v.string() },
+  handler: async (ctx, { apiKey }) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new ConvexError({ code: "NotAuthorized", message: "Unauthorized" });
+    }
+
+    const response = await fetch("https://openrouter.ai/api/v1/models", {
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
       },
     });
 

@@ -13,6 +13,7 @@ import { getEnv } from '~/lib/.server/env';
 // workaround for Vercel environment from
 // https://github.com/vercel/ai/issues/199#issuecomment-1605245593
 import { fetch } from '~/lib/.server/fetch';
+import type { UserApiKey } from '~/lib/.server/chat';
 
 const ALLOWED_AWS_REGIONS = ['us-east-1', 'us-west-2'];
 
@@ -30,7 +31,7 @@ type Provider = {
   };
 };
 
-export function modelForProvider(provider: ModelProvider, modelChoice: string | undefined) {
+export function modelForProvider(provider: ModelProvider, modelChoice: string | undefined, userApiKey?: UserApiKey) {
   if (modelChoice) {
     if (modelChoice === 'claude-sonnet-4-0' && provider === 'Bedrock') {
       return 'us.anthropic.claude-sonnet-4-20250514-v1:0';
@@ -53,6 +54,8 @@ export function modelForProvider(provider: ModelProvider, modelChoice: string | 
       return getEnv('XAI_MODEL') || 'grok-3-mini';
     case 'Google':
       return getEnv('GOOGLE_MODEL') || 'gemini-2.5-pro';
+    case 'OpenRouter':
+      return userApiKey?.openrouterModel || getEnv('OPENROUTER_MODEL') || 'qwen/qwen3-coder:free';
     default: {
       const _exhaustiveCheck: never = provider;
       throw new Error(`Unknown provider: ${_exhaustiveCheck}`);
@@ -65,21 +68,22 @@ function anthropicMaxTokens(modelChoice: string | undefined) {
 }
 
 export function getProvider(
-  userApiKey: string | undefined,
+  userApiKey: UserApiKey | undefined,
   modelProvider: ModelProvider,
   modelChoice: string | undefined,
 ): Provider {
   let model: string;
   let provider: Provider;
+  const apiKey = userApiKey;
 
   switch (modelProvider) {
     case 'Google': {
       model = modelForProvider(modelProvider, modelChoice);
       let google;
-      if (userApiKey) {
+      if (apiKey) {
         google = createGoogleGenerativeAI({
-          apiKey: userApiKey || getEnv('GOOGLE_API_KEY'),
-          fetch: userApiKey ? userKeyApiFetch('Google') : fetch,
+          apiKey: apiKey.google || getEnv('GOOGLE_API_KEY'),
+          fetch: apiKey.google ? userKeyApiFetch('Google') : fetch,
         });
       } else {
         const credentials = JSON.parse(getEnv('GOOGLE_VERTEX_CREDENTIALS_JSON')!);
@@ -107,8 +111,8 @@ export function getProvider(
     case 'XAI': {
       model = modelForProvider(modelProvider, modelChoice);
       const xai = createXai({
-        apiKey: userApiKey || getEnv('XAI_API_KEY'),
-        fetch: userApiKey ? userKeyApiFetch('XAI') : fetch,
+        apiKey: apiKey?.xai || getEnv('XAI_API_KEY'),
+        fetch: apiKey?.xai ? userKeyApiFetch('XAI') : fetch,
       });
       provider = {
         model: xai(model),
@@ -124,14 +128,28 @@ export function getProvider(
     case 'OpenAI': {
       model = modelForProvider(modelProvider, modelChoice);
       const openai = createOpenAI({
-        apiKey: userApiKey || getEnv('OPENAI_API_KEY'),
-        fetch: userApiKey ? userKeyApiFetch('OpenAI') : fetch,
+        apiKey: apiKey?.openai || getEnv('OPENAI_API_KEY'),
+        fetch: apiKey?.openai ? userKeyApiFetch('OpenAI') : fetch,
         compatibility: 'strict',
       });
       provider = {
         model: openai(model),
         maxTokens: 24576,
         options: modelChoice === 'gpt-5' ? { openai: { reasoningEffort: 'medium' } } : undefined,
+      };
+      break;
+    }
+    case 'OpenRouter': {
+      model = modelForProvider(modelProvider, modelChoice, userApiKey);
+      const openrouter = createOpenAI({
+        apiKey: apiKey?.openrouter || getEnv('OPENROUTER_API_KEY'),
+        baseURL: 'https://openrouter.ai/api/v1',
+        fetch: apiKey?.openrouter ? userKeyApiFetch('OpenRouter') : fetch,
+        compatibility: 'strict',
+      });
+      provider = {
+        model: openrouter(model),
+        maxTokens: 8192,
       };
       break;
     }
@@ -208,8 +226,8 @@ export function getProvider(
         };
       };
       const anthropic = createAnthropic({
-        apiKey: userApiKey || getEnv('ANTHROPIC_API_KEY'),
-        fetch: userApiKey ? userKeyApiFetch('Anthropic') : rateLimitAwareFetch(),
+        apiKey: apiKey?.value || getEnv('ANTHROPIC_API_KEY'),
+        fetch: apiKey?.value ? userKeyApiFetch('Anthropic') : rateLimitAwareFetch(),
       });
 
       provider = {
