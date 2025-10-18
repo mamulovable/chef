@@ -53,6 +53,9 @@ export function modelForProvider(provider: ModelProvider, modelChoice: string | 
       return getEnv('XAI_MODEL') || 'grok-3-mini';
     case 'Google':
       return getEnv('GOOGLE_MODEL') || 'gemini-2.5-pro';
+    case 'OpenRouter':
+      // Default to a free, generally available model if none selected
+      return getEnv('OPENROUTER_MODEL') || 'deepseek/deepseek-chat-v3.1:free';
     default: {
       const _exhaustiveCheck: never = provider;
       throw new Error(`Unknown provider: ${_exhaustiveCheck}`);
@@ -132,6 +135,33 @@ export function getProvider(
         model: openai(model),
         maxTokens: 24576,
         options: modelChoice === 'gpt-5' ? { openai: { reasoningEffort: 'medium' } } : undefined,
+      };
+      break;
+    }
+    case 'OpenRouter': {
+      model = modelForProvider(modelProvider, modelChoice);
+      const base = userApiKey ? userKeyApiFetch('OpenRouter') : fetch;
+      const addOpenRouterHeaders = (baseFetch: typeof fetch) => {
+        return async (input: RequestInfo | URL, init?: RequestInit) => {
+          const headers = new Headers(init?.headers);
+          if (!headers.has('HTTP-Referer')) {
+            headers.set('HTTP-Referer', getEnv('OPENROUTER_REFERRER') || 'https://chef.convex.dev');
+          }
+          if (!headers.has('X-Title')) {
+            headers.set('X-Title', getEnv('OPENROUTER_TITLE') || 'Chef - AI Full-Stack App Builder');
+          }
+          return baseFetch(input, { ...init, headers });
+        };
+      };
+      const openrouter = createOpenAI({
+        apiKey: userApiKey || getEnv('OPENROUTER_API_KEY'),
+        baseURL: 'https://openrouter.ai/api/v1',
+        fetch: addOpenRouterHeaders(base),
+        compatibility: 'strict',
+      });
+      provider = {
+        model: openrouter(model),
+        maxTokens: 16384,
       };
       break;
     }

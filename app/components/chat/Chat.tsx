@@ -195,7 +195,10 @@ export const Chat = memo(
 
         // Map models to their respective providers
         const MODEL_TO_PROVIDER_MAP: {
-          [K in ModelSelection]: { providerName: ModelProvider; apiKeyField: 'value' | 'openai' | 'xai' | 'google' };
+          [K in ModelSelection]: {
+            providerName: ModelProvider;
+            apiKeyField: 'value' | 'openai' | 'xai' | 'google' | 'openrouter';
+          };
         } = {
           auto: { providerName: 'anthropic', apiKeyField: 'value' },
           'claude-4-sonnet': { providerName: 'anthropic', apiKeyField: 'value' },
@@ -206,6 +209,9 @@ export const Chat = memo(
           'gemini-2.5-pro': { providerName: 'google', apiKeyField: 'google' },
           'claude-3-5-haiku': { providerName: 'anthropic', apiKeyField: 'value' },
           'gpt-4.1-mini': { providerName: 'openai', apiKeyField: 'openai' },
+          'deepseek/deepseek-chat-v3.1:free': { providerName: 'openrouter', apiKeyField: 'openrouter' },
+'z-ai/glm-4.5-air:free': { providerName: 'openrouter', apiKeyField: 'openrouter' },
+          'openai/gpt-oss-20b:free': { providerName: 'openrouter', apiKeyField: 'openrouter' },
         };
 
         // Get provider info for the current model
@@ -322,6 +328,13 @@ export const Chat = memo(
         } else if (modelSelection === 'gpt-5') {
           modelProvider = 'OpenAI';
           modelChoice = 'gpt-5';
+        } else if (
+          modelSelection === 'deepseek/deepseek-chat-v3.1:free' ||
+          modelSelection === 'z-ai/glm-4.5-air:free' ||
+          modelSelection === 'openai/gpt-oss-20b:free'
+        ) {
+          modelProvider = 'OpenRouter';
+          modelChoice = modelSelection;
         } else {
           const _exhaustiveCheck: never = modelSelection;
           throw new Error(`Unknown model: ${_exhaustiveCheck}`);

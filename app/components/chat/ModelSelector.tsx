@@ -10,7 +10,7 @@ import type { Doc } from '@convex/_generated/dataModel';
 import { captureMessage } from '@sentry/remix';
 import { useLaunchDarkly } from '~/lib/hooks/useLaunchDarkly';
 
-export type ModelProvider = 'openai' | 'google' | 'xai' | 'anthropic' | 'auto';
+export type ModelProvider = 'openai' | 'google' | 'xai' | 'anthropic' | 'openrouter' | 'auto';
 
 export function displayModelProviderName(provider: ModelProvider) {
   switch (provider) {
@@ -22,6 +22,8 @@ export function displayModelProviderName(provider: ModelProvider) {
       return 'xAI';
     case 'anthropic':
       return 'Anthropic';
+    case 'openrouter':
+      return 'OpenRouter';
     case 'auto':
       return 'Anthropic';
     default: {
@@ -46,6 +48,31 @@ const providerToIcon: Record<string, React.ReactNode> = {
   openai: svgIcon('/icons/openai.svg'),
   anthropic: svgIcon('/icons/claude.svg'),
   google: svgIcon('/icons/gemini.svg'),
+  openrouter: (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M12 2L2 7L12 12L22 7L12 2Z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M2 17L12 22L22 17"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M2 12L12 17L22 12"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
   xai: (
     <svg width="16" height="16" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -113,6 +140,21 @@ export const models: Partial<
   'gpt-4.1-mini': {
     name: 'GPT-4.1 Mini',
     provider: 'openai',
+    requireKey: true,
+  },
+  'deepseek/deepseek-chat-v3.1:free': {
+    name: 'DeepSeek Chat v3.1 (Free)',
+    provider: 'openrouter',
+    requireKey: true,
+  },
+  'z-ai/glm-4.5-air:free': {
+    name: 'GLM 4.5 Air (Free)',
+    provider: 'openrouter',
+    requireKey: true,
+  },
+  'openai/gpt-oss-20b:free': {
+    name: 'GPT OSS 20B (Free)',
+    provider: 'openrouter',
     requireKey: true,
   },
 } as const;
@@ -209,6 +251,9 @@ const keyForProvider = (apiKeys: Doc<'convexMembers'>['apiKey'], provider: Model
     } else {
       return apiKeys?.value;
     }
+  }
+  if (provider === 'openrouter') {
+    return apiKeys?.openrouter;
   }
   return apiKeys?.[provider];
 };
