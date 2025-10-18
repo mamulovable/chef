@@ -2,6 +2,7 @@
 @import 'z-index.css';
 @import 'animations.css';
 @import 'fonts.css';
+@import 'landing-theme.css';
 @import 'components/terminal.css';
 @import 'components/resize-handle.css';
 @import 'components/code.css';
@@ -25,6 +26,23 @@ html.light {
 
 html.dark {
   color-scheme: dark;
+}
+
+/* Animated AI Chat Styles */
+.lab-bg::before {
+  overflow: hidden;
+  max-width: 100vw;
+  max-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Grid Background Pattern - Buildly/Dreamera Style */
+.grid-background {
+  background-image: 
+    linear-gradient(rgba(91, 44, 131, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91, 44, 131, 0.08) 1px, transparent 1px);
+  background-size: 50px 50px;
+  background-position: center center;
 }
 
 @layer utilities {

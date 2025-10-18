@@ -34,7 +34,7 @@ export type ModelSelection =
   | 'gpt-5'
   | 'grok-3-mini'
   | 'gemini-2.5-pro'
-  | 'deepseek/deepseek-chat-v3.1:free'
+  | 'meta-llama/llama-3.3-70b-instruct:free'
   | 'z-ai/glm-4.5-air:free'
   | 'openai/gpt-oss-20b:free';
 

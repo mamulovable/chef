@@ -537,7 +537,7 @@ function UserPrompt({ group }: { group: AllPromptsForUserInteraction }) {
             <span className="font-semibold text-gray-900 dark:text-gray-100">
               {formatNumber(group.summary.totalChefTokens)}
             </span>{' '}
-            chef tokens (${formatChefTokenPrice(group.summary.totalChefTokens)})
+            Dreamera tokens (${formatChefTokenPrice(group.summary.totalChefTokens)})
           </div>
         </div>
       </div>
@@ -677,7 +677,7 @@ export default function DebugAllPromptsForChat({ chatInitialId, onClose, isDebug
             </div>
             <div>
               <span className="font-semibold text-gray-900 dark:text-gray-100">{formatNumber(totals.chefTokens)}</span>{' '}
-              total chef tokens (${totalPrice})
+              total Dreamera tokens (${totalPrice})
             </div>
           </div>
         </div>

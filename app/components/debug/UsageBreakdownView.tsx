@@ -151,7 +151,7 @@ export function UsageBreakdownView({
         <h2>Per Message</h2>
         {usageData?.usagePerMessage.map((usage) => (
           <CollapsibleView
-            title={`Message ${usage.messageIdx} -- ${formatNumber(usage.chefTokens)} chef tokens`}
+            title={`Message ${usage.messageIdx} -- ${formatNumber(usage.chefTokens)} Dreamera tokens`}
             key={usage.messageIdx.toString()}
           >
             <div className="ml-4">
@@ -170,7 +170,7 @@ export function UsageBreakdownView({
                   {usage.parts.map((part, idx) => (
                     <div className="flex flex-col gap-4" key={idx}>
                       <CollapsibleView
-                        title={`Part ${idx} -- Chef Tokens: ${formatNumber(part.usageInfo?.chefTokens ?? 0)}`}
+                        title={`Part ${idx} -- Dreamera Tokens: ${formatNumber(part.usageInfo?.chefTokens ?? 0)}`}
                         startOpen={false}
                       >
                         <div className="ml-4 flex flex-col gap-4">

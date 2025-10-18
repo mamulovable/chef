@@ -1,0 +1,254 @@
+/* Landing Page Theme Variables */
+
+/* Light Mode - Default */
+:root {
+  /* Background Colors */
+  --landing-bg-primary: #F8F9FC;
+  --landing-bg-secondary: #FFFFFF;
+  --landing-bg-tertiary: #F3F4F6;
+  --landing-bg-subtle: #F3F4F6;
+  
+  /* Accent Colors */
+  --landing-accent-primary: #3B82F6;
+  --landing-accent-secondary: #60A5FA;
+  --landing-accent-hover: #2563EB;
+  
+  /* Text Colors */
+  --landing-text-primary: #1F2937;
+  --landing-text-secondary: #6B7280;
+  --landing-text-tertiary: #9CA3AF;
+  
+  /* Border Colors */
+  --landing-border-color: #E5E7EB;
+  --landing-border-accent: #3B82F6;
+  
+  /* Shadow Colors */
+  --landing-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --landing-shadow-md: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  --landing-shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --landing-shadow-xl: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Dark Mode */
+html.dark,
+[data-theme="dark"] {
+  /* Background Colors */
+  --landing-bg-primary: #0F172A;
+  --landing-bg-secondary: #1E293B;
+  --landing-bg-tertiary: #334155;
+  --landing-bg-subtle: #1A202C;
+  
+  /* Accent Colors */
+  --landing-accent-primary: #60A5FA;
+  --landing-accent-secondary: #93C5FD;
+  --landing-accent-hover: #3B82F6;
+  
+  /* Text Colors */
+  --landing-text-primary: #F1F5F9;
+  --landing-text-secondary: #CBD5E1;
+  --landing-text-tertiary: #94A3B8;
+  
+  /* Border Colors */
+  --landing-border-color: #334155;
+  --landing-border-accent: #60A5FA;
+  
+  /* Shadow Colors */
+  --landing-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --landing-shadow-md: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+  --landing-shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --landing-shadow-xl: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+}
+
+/* Smooth Theme Transitions */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+/* Landing Page Specific Styles */
+.landing-container {
+  background-color: var(--landing-bg-primary);
+  color: var(--landing-text-primary);
+  min-height: 100vh;
+}
+
+.landing-card {
+  background-color: var(--landing-bg-secondary);
+  border: 1px solid var(--landing-border-color);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--landing-shadow-md);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.landing-card:hover {
+  box-shadow: var(--landing-shadow-lg);
+  transform: translateY(-2px);
+  border-color: var(--landing-border-accent);
+}
+
+.landing-button-primary {
+  background-color: var(--landing-accent-primary);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.landing-button-primary:hover {
+  background-color: var(--landing-accent-hover);
+  box-shadow: var(--landing-shadow-lg);
+  transform: translateY(-1px);
+}
+
+.landing-button-secondary {
+  background-color: transparent;
+  color: var(--landing-accent-primary);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  border: 2px solid var(--landing-accent-primary);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.landing-button-secondary:hover {
+  background-color: var(--landing-accent-primary);
+  color: white;
+}
+
+/* Gradient Background for Hero */
+.landing-hero-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--landing-bg-primary) 0%,
+    var(--landing-bg-subtle) 50%,
+    var(--landing-bg-primary) 100%
+  );
+}
+
+/* Icon Styles */
+.landing-icon {
+  width: 48px;
+  height: 48px;
+  color: var(--landing-accent-primary);
+  stroke-width: 2px;
+}
+
+.landing-icon-sm {
+  width: 32px;
+  height: 32px;
+  color: var(--landing-accent-primary);
+  stroke-width: 2px;
+}
+
+/* Section Spacing */
+.landing-section {
+  padding: 80px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Subtle Background Alternation */
+.landing-section:nth-child(even) {
+  background-color: var(--landing-bg-subtle);
+}
+
+/* Number Badges for Steps */
+.landing-step-number {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--landing-accent-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin: 0 auto 16px;
+}
+
+/* FAQ Accordion Styles */
+.landing-faq-item {
+  background-color: var(--landing-bg-secondary);
+  border: 1px solid var(--landing-border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.landing-faq-item:hover {
+  border-color: var(--landing-border-accent);
+}
+
+.landing-faq-question {
+  padding: 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  color: var(--landing-text-primary);
+}
+
+.landing-faq-answer {
+  padding: 0 20px 20px;
+  color: var(--landing-text-secondary);
+  line-height: 1.6;
+}
+
+/* Pricing Card Highlight */
+.landing-pricing-popular {
+  border: 2px solid var(--landing-accent-primary);
+  box-shadow: var(--landing-shadow-xl);
+  transform: scale(1.05);
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

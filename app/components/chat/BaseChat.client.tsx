@@ -28,6 +28,7 @@ import { SubchatLimitNudge } from './SubchatLimitNudge';
 import { useMutation } from 'convex/react';
 import { api } from '@convex/_generated/api';
 import { subchatIndexStore, useIsSubchatLoaded } from '~/lib/stores/subchats';
+import { SparklesIcon } from '@heroicons/react/24/outline';
 
 interface BaseChatProps {
   // Refs
@@ -140,7 +141,9 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
     const baseChat = (
       <div
         ref={ref}
-        className={classNames(styles.BaseChat, 'relative flex h-full w-full overflow-hidden')}
+        className={classNames(styles.BaseChat, 'relative flex h-full w-full overflow-hidden', {
+          'grid-background': !chatStarted,
+        })}
         data-chat-visible={showChat}
         data-messages-for-evals={dataForEvals}
       >
@@ -153,12 +156,24 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
               })}
             >
               {!chatStarted && (
-                <div id="intro" className="mx-auto mb-8 mt-12 max-w-chat px-4 text-center md:mt-16 lg:px-0">
-                  <h1 className="mb-2 animate-fadeInFromLoading font-display text-4xl font-black leading-none tracking-tight text-content-primary md:text-5xl lg:mb-4 lg:text-6xl">
-                    Now you&rsquo;re cooking
+                <div id="intro" className="mx-auto mb-16 mt-16 max-w-5xl px-4 text-center md:mt-20 lg:px-0">
+                  <div className="mb-6 flex justify-center">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-[#5B2C83]/30 bg-[#5B2C83]/10 px-4 py-2 text-sm text-[#F5C542]">
+                      <SparklesIcon className="size-4" />
+                      <span>From prompt to product fast</span>
+                    </div>
+                  </div>
+                  <h1 className="mb-6 animate-fadeInFromLoading font-display text-5xl font-bold leading-tight tracking-tight md:text-6xl lg:mb-8 lg:text-7xl">
+                    <span className="bg-gradient-to-br from-white via-white to-gray-400 bg-clip-text text-transparent">
+                      Build Your App or Website.
+                    </span>
+                    <br />
+                    <span className="bg-gradient-to-r from-[#F5C542] via-[#FFC107] to-[#F5C542] bg-clip-text text-transparent">
+                      Just Describe It.
+                    </span>
                   </h1>
-                  <p className="animate-fadeInFromLoading text-balance font-display text-lg font-medium text-content-secondary [animation-delay:200ms] [animation-fill-mode:backwards] md:text-xl">
-                    The open-source app generator powered by Convex
+                  <p className="mx-auto mb-12 max-w-3xl animate-fadeInFromLoading text-balance font-display text-lg font-normal leading-relaxed text-gray-400 [animation-delay:200ms] [animation-fill-mode:backwards] md:text-xl">
+                    Dreamera turns your ideas into real, working apps and websites. Simply describe what you need—we&apos;ll handle the code, design, and logic.
                   </p>
                 </div>
               )}

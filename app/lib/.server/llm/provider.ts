@@ -55,7 +55,7 @@ export function modelForProvider(provider: ModelProvider, modelChoice: string | 
       return getEnv('GOOGLE_MODEL') || 'gemini-2.5-pro';
     case 'OpenRouter':
       // Default to a free, generally available model if none selected
-      return getEnv('OPENROUTER_MODEL') || 'deepseek/deepseek-chat-v3.1:free';
+      return getEnv('OPENROUTER_MODEL') || 'meta-llama/llama-3.3-70b-instruct:free';
     default: {
       const _exhaustiveCheck: never = provider;
       throw new Error(`Unknown provider: ${_exhaustiveCheck}`);

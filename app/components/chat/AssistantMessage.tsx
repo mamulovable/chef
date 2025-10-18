@@ -106,10 +106,10 @@ function displayModelAndUsage({
   showUsageAnnotations: boolean;
 }) {
   const modelDisplay = displayModel(model ?? { provider: 'Unknown', model: undefined });
-  // Note: These numbers are the LLM-reported tokens, not Chef tokens (i.e. not
+  // Note: These numbers are the LLM-reported tokens, not Dreamera tokens (i.e. not
   // what we use to bill users). This attempts to take into account the logic where
   // we don't charge for tokens produced from failed tool calls. This should
-  // probably be re-worked to use Chef tokens.
+  // probably be re-worked to use Dreamera tokens.
 
   const usageDisplay = usageAnnotation
     ? displayUsage(usageAnnotation, model?.provider ?? 'Unknown', showUsageAnnotations)
@@ -143,7 +143,7 @@ function displayUsage(usageAnnotation: UsageAnnotation, provider: ProviderType, 
   const { chefTokens, breakdown } = calculateChefTokens(usage, provider);
   return (
     <div className="text-xs text-content-secondary">
-      Chef Tokens: {displayChefTokenNumber(chefTokens)}
+      Dreamera Tokens: {displayChefTokenNumber(chefTokens)}
       {showUsageAnnotations ? `, ${displayBreakdownForSingleAnnotation(breakdown)}` : ''}
     </div>
   );

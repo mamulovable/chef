@@ -28,7 +28,7 @@ export function hasApiKeySet(
       return !!apiKey.xai?.trim();
     case 'gemini-2.5-pro':
       return !!apiKey.google?.trim();
-    case 'deepseek/deepseek-chat-v3.1:free':
+    case 'meta-llama/llama-3.3-70b-instruct:free':
     case 'z-ai/glm-4.5-air:free':
     case 'openai/gpt-oss-20b:free':
       return !!apiKey.openrouter?.trim();

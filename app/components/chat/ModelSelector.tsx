@@ -142,8 +142,8 @@ export const models: Partial<
     provider: 'openai',
     requireKey: true,
   },
-  'deepseek/deepseek-chat-v3.1:free': {
-    name: 'DeepSeek Chat v3.1 (Free)',
+'meta-llama/llama-3.3-70b-instruct:free': {
+    name: 'Llama 3.3 70B Instruct (Free)',
     provider: 'openrouter',
     requireKey: true,
   },

@@ -2,28 +2,28 @@ import { useStore } from '@nanostores/react';
 import { useState } from 'react';
 import { ClientOnly } from 'remix-utils/client-only';
 import { chatStore } from '~/lib/stores/chatId';
-import { HeaderActionButtons } from './HeaderActionButtons.client';
+import { HeaderActionButtons } from '../header/HeaderActionButtons.client';
 import { ChatDescription } from '~/components/header/ChatDescription.client';
-import { DeployButton } from './DeployButton';
-import { ShareButton } from './ShareButton';
+import { DeployButton } from '../header/DeployButton';
+import { ShareButton } from '../header/ShareButton';
 import { useConvexSessionIdOrNullOrLoading } from '~/lib/stores/sessionId';
-import { HamburgerMenuIcon, PersonIcon, GearIcon, ExitIcon } from '@radix-ui/react-icons';
-import { DownloadButton } from './DownloadButton';
-import { LoggedOutHeaderButtons } from './LoggedOutHeaderButtons';
+import { HamburgerMenuIcon, PersonIcon, GearIcon, ExitIcon, HomeIcon } from '@radix-ui/react-icons';
+import { DownloadButton } from '../header/DownloadButton';
+import { LoggedOutHeaderButtons } from '../header/LoggedOutHeaderButtons';
 import { profileStore, setProfile } from '~/lib/stores/profile';
 import { Menu as MenuComponent, MenuItem as MenuItemComponent } from '@ui/Menu';
 import { SESSION_ID_KEY } from '~/components/chat/ChefAuthWrapper';
-import { FeedbackButton } from './FeedbackButton';
-import { DiscordButton } from './DiscordButton';
-import { PromptDebugButton } from './PromptDebugButton';
-import { ReferButton } from './ReferButton';
+import { FeedbackButton } from '../header/FeedbackButton';
+import { DiscordButton } from '../header/DiscordButton';
+import { PromptDebugButton } from '../header/PromptDebugButton';
+import { ReferButton } from '../header/ReferButton';
 import { useSelectedTeamSlug } from '~/lib/stores/convexTeams';
 import { useUsage } from '~/lib/stores/usage';
 import { useReferralStats } from '~/lib/hooks/useReferralCode';
 import { Menu } from '~/components/sidebar/Menu.client';
 import { useAuth } from '@workos-inc/authkit-react';
 
-export function Header({ hideSidebarIcon = false }: { hideSidebarIcon?: boolean }) {
+export function BuilderHeader({ hideSidebarIcon = false }: { hideSidebarIcon?: boolean }) {
   const chat = useStore(chatStore);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -49,11 +49,15 @@ export function Header({ hideSidebarIcon = false }: { hideSidebarIcon?: boolean 
   };
 
   return (
-    <header className={'flex h-[var(--header-height)] items-center overflow-x-auto overflow-y-hidden border-b p-5'}>
+    <header
+      className={
+        'flex h-[var(--header-height)] items-center justify-between border-b border-[#5B2C83]/30 bg-[#0F0F10]/95 px-5 backdrop-blur-xl'
+      }
+    >
       <div className="z-40 flex cursor-pointer items-center gap-4 text-content-primary">
         {showSidebarIcon && (
           <HamburgerMenuIcon
-            className="shrink-0"
+            className="shrink-0 text-[#F5C542] hover:text-[#F5C542]/80"
             data-hamburger-menu
             onClick={(e) => {
               e.stopPropagation();
@@ -61,29 +65,15 @@ export function Header({ hideSidebarIcon = false }: { hideSidebarIcon?: boolean 
             }}
           />
         )}
-        <a href="/" className="flex items-center gap-2">
-          {/* Dreamera logo/text */}
-          <div className="flex items-center gap-2">
-            <div className="flex size-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#5B2C83] to-[#7A3CA3]">
-              <span className="text-2xl font-bold text-[#F5C542]">D</span>
-            </div>
-            <span className="text-2xl font-bold text-[#F5C542]">Dreamera</span>
+        <a href="/" className="flex items-center gap-2" title="Back to home">
+          <div className="flex size-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#5B2C83] to-[#7A3CA3]">
+            <span className="text-xl font-bold text-[#F5C542]">D</span>
           </div>
+          <span className="text-xl font-bold text-[#F5C542]">Dreamera</span>
         </a>
-        <a
-          href="https://github.com/get-convex/dreamera"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="relative hidden cursor-pointer select-none items-center gap-1.5 whitespace-nowrap rounded-md border border-[#5B2C83] bg-background-secondary p-1 text-sm font-medium text-[#F5C542] transition-colors hover:bg-[#5B2C83]/10 focus-visible:border focus-visible:border-[#F5C542] focus-visible:outline-none sm:flex"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
-            <path
-              d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-              fill="currentColor"
-            />
-          </svg>
-          Star on GitHub
-        </a>
+        {!chat.started && (
+          <span className="ml-4 hidden text-sm text-gray-400 md:inline">What will you dream today?</span>
+        )}
       </div>
       <>
         {chat.started && (
@@ -115,7 +105,7 @@ export function Header({ hideSidebarIcon = false }: { hideSidebarIcon?: boolean 
                     variant: 'neutral',
                     title: 'User menu',
                     inline: true,
-                    className: 'rounded-full',
+                    className: 'rounded-full border-[#5B2C83]/40 hover:border-[#F5C542]',
                     icon: profile.avatar ? (
                       <img
                         src={profile.avatar}
@@ -124,19 +114,19 @@ export function Header({ hideSidebarIcon = false }: { hideSidebarIcon?: boolean 
                         decoding="sync"
                       />
                     ) : (
-                      <PersonIcon className="size-8 min-w-8 rounded-full border text-content-secondary" />
+                      <PersonIcon className="size-8 min-w-8 rounded-full border border-[#5B2C83]/40 text-[#F5C542]" />
                     ),
                   }}
                 >
                   <FeedbackButton showInMenu={true} />
                   <DiscordButton showInMenu={true} />
-                  <hr />
+                  <hr className="border-[#5B2C83]/30" />
                   <MenuItemComponent action={handleSettingsClick}>
-                    <GearIcon className="text-content-secondary" />
+                    <GearIcon className="text-[#F5C542]" />
                     Settings & Usage
                   </MenuItemComponent>
                   <MenuItemComponent action={handleLogout}>
-                    <ExitIcon className="text-content-secondary" />
+                    <ExitIcon className="text-gray-400" />
                     Log out
                   </MenuItemComponent>
                 </MenuComponent>
@@ -149,3 +139,4 @@ export function Header({ hideSidebarIcon = false }: { hideSidebarIcon?: boolean 
     </header>
   );
 }
+

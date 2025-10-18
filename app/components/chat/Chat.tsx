@@ -209,7 +209,7 @@ export const Chat = memo(
           'gemini-2.5-pro': { providerName: 'google', apiKeyField: 'google' },
           'claude-3-5-haiku': { providerName: 'anthropic', apiKeyField: 'value' },
           'gpt-4.1-mini': { providerName: 'openai', apiKeyField: 'openai' },
-          'deepseek/deepseek-chat-v3.1:free': { providerName: 'openrouter', apiKeyField: 'openrouter' },
+'meta-llama/llama-3.3-70b-instruct:free': { providerName: 'openrouter', apiKeyField: 'openrouter' },
 'z-ai/glm-4.5-air:free': { providerName: 'openrouter', apiKeyField: 'openrouter' },
           'openai/gpt-oss-20b:free': { providerName: 'openrouter', apiKeyField: 'openrouter' },
         };
@@ -329,7 +329,7 @@ export const Chat = memo(
           modelProvider = 'OpenAI';
           modelChoice = 'gpt-5';
         } else if (
-          modelSelection === 'deepseek/deepseek-chat-v3.1:free' ||
+          modelSelection === 'meta-llama/llama-3.3-70b-instruct:free' ||
           modelSelection === 'z-ai/glm-4.5-air:free' ||
           modelSelection === 'openai/gpt-oss-20b:free'
         ) {
@@ -491,7 +491,7 @@ export const Chat = memo(
         (retries.numFailures >= MAX_RETRIES || now < retries.nextRetry) &&
         !hasApiKeySet(modelSelection, useGeminiAuto, apiKey)
       ) {
-        let message: string | ReactNode = 'Chef is too busy cooking right now. ';
+        let message: string | ReactNode = 'Dreamera is busy processing requests right now. ';
         if (retries.numFailures >= MAX_RETRIES) {
           message = (
             <>
@@ -767,7 +767,7 @@ export function NoTokensText({ resetDisableChatMessage }: { resetDisableChatMess
         {referralCode && referralStats?.left !== 0 && (
           <div className="w-full space-y-2">
             <p className="text-sm text-content-secondary">
-              Refer a friend and Get 85,000 free Chef tokens for each
+              Refer a friend and Get 85,000 free Dreamera tokens for each
               {referralStats?.left === 5 || !referralStats ? ' (limit 5)' : ` (${referralStats.left} / 5)`}
             </p>
             <div className="flex items-center gap-2">

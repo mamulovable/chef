@@ -18,14 +18,14 @@ This project is a fork of the `stable` branch of [bolt.diy](https://github.com/s
 
 ## Getting Started
 
-Visit our [documentation](https://docs.convex.dev/chef) to learn more about Chef and check out our prompting [guide](https://stack.convex.dev/chef-cookbook-tips-working-with-ai-app-builders).
+Visit our [documentation](https://docs.convex.dev/dreamera) to learn more about Dreamera and check out our prompting [guide](https://stack.convex.dev/dreamera-cookbook-tips-working-with-ai-app-builders).
 
-The easiest way to build with Chef is through our hosted [webapp](https://chef.convex.dev), which includes a generous free tier. If you want to
-run Chef locally, you can follow the guide below.
+The easiest way to build with Dreamera is through our hosted [webapp](https://dreamera.ai), which includes a generous free tier. If you want to
+run Dreamera locally, you can follow the guide below.
 
 ### Running Locally
 
-Note: This will use the hosted Convex control plane to provision Convex projects. However, Chef tokens used in this enviroment will not count towards usage in your Convex account.
+Note: This will use the hosted Convex control plane to provision Convex projects. However, Dreamera tokens used in this environment will not count towards usage in your Convex account.
 
 **1. Clone the project**
 

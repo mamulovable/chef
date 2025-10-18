@@ -1,11 +1,17 @@
+import { BuilderWelcome } from '~/components/builder/BuilderWelcome';
+
 export default function Landing() {
+  return <BuilderWelcome />;
+}
+
+export function LandingReadme() {
   return (
     <div className="my-12 flex max-w-chat flex-col">
-      <div className="overflow-hidden rounded-lg border border-neutral-2 dark:border-neutral-10">
-        <div className="flex items-center border-b border-neutral-2 bg-neutral-1/20 px-4 py-2 dark:border-neutral-10 dark:bg-neutral-11">
+      <div className="overflow-hidden rounded-lg border border-[#5B2C83]/40 bg-[#1a1a1c]">
+        <div className="flex items-center border-b border-[#5B2C83]/30 bg-[#5B2C83]/10 px-4 py-2">
           <a
-            href="https://github.com/get-convex/chef"
-            className="flex items-center gap-2 hover:text-neutral-9 dark:hover:text-neutral-4"
+            href="https://github.com/get-convex/dreamera"
+            className="flex items-center gap-2 text-[#F5C542] hover:text-[#F5C542]/80"
           >
             <svg
               aria-hidden="true"
@@ -19,15 +25,15 @@ export default function Landing() {
             >
               <path d="M0 1.75A.75.75 0 0 1 .75 1h4.253c1.227 0 2.317.59 3 1.501A3.743 3.743 0 0 1 11.006 1h4.245a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-.75.75h-4.507a2.25 2.25 0 0 0-1.591.659l-.622.621a.75.75 0 0 1-1.06 0l-.622-.621A2.25 2.25 0 0 0 5.258 13H.75a.75.75 0 0 1-.75-.75Zm7.251 10.324.004-5.073-.002-2.253A2.25 2.25 0 0 0 5.003 2.5H1.5v9h3.757a3.75 3.75 0 0 1 1.994.574ZM8.755 4.75l-.004 7.322a3.752 3.752 0 0 1 1.992-.572H14.5v-9h-3.495a2.25 2.25 0 0 0-2.25 2.25Z" />
             </svg>
-            <span className="text-sm font-semibold text-neutral-9 dark:text-neutral-2">README</span>
+            <span className="text-sm font-semibold text-[#F5C542]">README</span>
           </a>
         </div>
-        <div className="flex flex-col gap-6 px-4 py-6 text-lg text-neutral-9 dark:text-neutral-2">
+        <div className="flex flex-col gap-6 px-4 py-6 text-lg text-gray-300">
           <p>
-            Chef is open-source, check out the GitHub repo{' '}
+            Dreamera is open-source, check out the GitHub repo{' '}
             <a
-              href="https://github.com/get-convex/chef"
-              className="font-semibold text-bolt-elements-button-primary-backgroundHover hover:underline dark:text-white"
+              href="https://github.com/get-convex/dreamera"
+              className="font-semibold text-[#F5C542] hover:underline"
             >
               here
             </a>
@@ -37,46 +43,46 @@ export default function Landing() {
             This is the only AI app builder that knows backend. By applying{' '}
             <a
               href="https://convex.dev"
-              className="font-semibold text-bolt-elements-button-primary-backgroundHover hover:underline dark:text-white"
+              className="font-semibold text-[#F5C542] hover:underline"
             >
               Convex
             </a>{' '}
             primitives directly to your code generation, your apps are automatically equipped with optimal backend
             patterns and best practices. Your full-stack apps come with a built-in database, zero config auth, file
             uploads, real-time UIs, and background workflows. If you want to check out the secret sauce that powers
-            Chef, you can view or download the system prompt{' '}
+            Dreamera, you can view or download the system prompt{' '}
             <a
-              href="https://github.com/get-convex/chef/releases/latest"
-              className="font-semibold text-bolt-elements-button-primary-backgroundHover hover:underline dark:text-white"
+              href="https://github.com/get-convex/dreamera/releases/latest"
+              className="font-semibold text-[#F5C542] hover:underline"
             >
               here
             </a>
             .
           </p>
           <p>
-            As mentioned above, Chef&apos;s capabilities are enabled by being built on top of{' '}
+            As mentioned above, Dreamera&apos;s capabilities are enabled by being built on top of{' '}
             <a
               href="https://convex.dev"
-              className="font-semibold text-bolt-elements-button-primary-backgroundHover hover:underline dark:text-white"
+              className="font-semibold text-[#F5C542] hover:underline"
             >
               Convex
             </a>
             , the open-source reactive database designed to make life easy for web app developers. The
-            &ldquo;magic&rdquo; in Chef is just the fact that it&apos;s using Convex&apos;s APIs, which are an ideal fit
+            &ldquo;magic&rdquo; in Dreamera is just the fact that it&apos;s using Convex&apos;s APIs, which are an ideal fit
             for codegen.
           </p>
           <p>
-            Development of the Chef is led by the Convex team. We{' '}
+            Development of Dreamera is led by the Convex team. We{' '}
             <a
-              href="https://github.com/get-convex/chef/blob/main/CONTRIBUTING.md"
-              className="font-semibold text-bolt-elements-button-primary-backgroundHover hover:underline dark:text-white"
+              href="https://github.com/get-convex/dreamera/blob/main/CONTRIBUTING.md"
+              className="font-semibold text-[#F5C542] hover:underline"
             >
               welcome bug fixes
             </a>{' '}
             and{' '}
             <a
               href="https://discord.gg/convex"
-              className="font-semibold text-bolt-elements-button-primary-backgroundHover hover:underline dark:text-white"
+              className="font-semibold text-[#F5C542] hover:underline"
             >
               love receiving feedback
             </a>
@@ -94,8 +100,8 @@ export default function Landing() {
           </p>
           <div className="flex justify-center">
             <a
-              href="https://github.com/get-convex/chef"
-              className="inline-flex items-center gap-2 rounded-lg border border-neutral-3 bg-neutral-1/50 px-3 py-2 text-lg text-neutral-12 transition-all hover:bg-neutral-1 dark:border-neutral-700 dark:bg-neutral-11 dark:text-neutral-2 dark:hover:bg-neutral-10"
+              href="https://github.com/get-convex/dreamera"
+              className="inline-flex items-center gap-2 rounded-lg border border-[#5B2C83] bg-[#5B2C83]/20 px-3 py-2 text-lg text-[#F5C542] transition-all hover:bg-[#5B2C83]/30"
             >
               <svg className="size-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path

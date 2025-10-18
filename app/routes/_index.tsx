@@ -2,16 +2,26 @@ import { json } from '@vercel/remix';
 import type { LoaderFunctionArgs } from '@vercel/remix';
 import type { LinksFunction, MetaFunction } from '@vercel/remix';
 import { ClientOnly } from 'remix-utils/client-only';
-import { Header } from '~/components/header/Header';
-import { Homepage } from '~/components/Homepage.client';
+import { LandingPage } from '~/components/landing/LandingPage.client';
 
 export const meta: MetaFunction = () => {
   return [
-    { title: 'Chef by Convex | Generate realtime full‑stack apps' },
-    { name: 'description', content: 'Cook up something hot with Chef, the full-stack AI coding agent from Convex' },
+    { title: 'Dreamera — Build Your Dream App & Website — No Code, Just Dream' },
+    { 
+      name: 'description', 
+      content: 'Explain what you want, and Dreamera will turn it into a fully functioning web app or website in minutes. No setup, no server, no headaches. Join over 120,000 dreamers building smarter.' 
+    },
     {
       property: 'og:image',
       content: '/social_preview_index.png',
+    },
+    {
+      property: 'og:title',
+      content: 'Dreamera — Build Your Dream App & Website — No Code, Just Dream',
+    },
+    {
+      property: 'og:description',
+      content: 'Turn your ideas into fully functioning web apps in minutes with AI-powered development.',
     },
   ];
 };
@@ -19,7 +29,7 @@ export const meta: MetaFunction = () => {
 export const links: LinksFunction = () => [
   {
     rel: 'canonical',
-    href: 'https://chef.convex.dev/',
+    href: 'https://dreamera.ai/',
   },
 ];
 
@@ -35,24 +45,12 @@ export const loader = async (args: LoaderFunctionArgs) => {
   return json({ code });
 };
 
-// Home page that asks the user to login and provide an initial prompt. After
-// starting the chat, all of the globals' in-memory state is preserved as it
-// switches to the chat view (we do *not* do a full page reload and go to the
-// chat route). This route is optimized for making the initial experience
-// really seamless.
-//
-// It's critical that going back to the homepage or to other chats use a `<a>`
-// tag so all in-memory state is rebuilt from scratch.
+// Landing page showcasing Dreamera's features, pricing, and capabilities.
+// Users can start building directly from the hero section or explore features first.
 export default function Index() {
-  /*
-  const location = useLocation();
-  const experience = chooseExperience(navigator.userAgent, new URLSearchParams(location.search));
-  */
-
   return (
-    <div className="flex size-full flex-col bg-bolt-elements-background-depth-1">
-      <Header />
-      <ClientOnly>{() => <Homepage />}</ClientOnly>
-    </div>
+    <ClientOnly>
+      {() => <LandingPage />}
+    </ClientOnly>
   );
 }

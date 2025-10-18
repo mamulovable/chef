@@ -1,4 +1,4 @@
-/* Convex Tokens */
+/* Dreamera Color Tokens - African-inspired premium palette */
 :root {
   --cvx-red-100: rgb(252, 215, 203);
   --cvx-red-200: rgb(255, 202, 193);
@@ -7,11 +7,11 @@
   --cvx-red-500: rgb(238, 52, 47);
   --cvx-red-700: rgb(168, 21, 21);
   --cvx-red-900: rgb(107, 33, 31);
-  --cvx-purple-100: rgb(241, 200, 233);
-  --cvx-purple-200: rgb(232, 180, 220);
-  --cvx-purple-500: rgb(141, 38, 118);
-  --cvx-purple-700: rgb(86, 0, 83);
-  --cvx-purple-900: rgb(113, 36, 96);
+  --cvx-purple-100: rgb(161, 120, 183);
+  --cvx-purple-200: rgb(131, 80, 163);
+  --cvx-purple-500: rgb(91, 44, 131);
+  --cvx-purple-700: rgb(71, 24, 111);
+  --cvx-purple-900: rgb(51, 14, 91);
   --cvx-blue-100: rgb(204, 222, 250);
   --cvx-blue-200: rgb(177, 202, 240);
   --cvx-blue-500: rgb(7, 78, 232);
@@ -29,9 +29,9 @@
   --cvx-yellow-50: rgb(254, 252, 232);
   --cvx-yellow-100: rgb(250, 228, 171);
   --cvx-yellow-200: rgb(230, 226, 168);
-  --cvx-yellow-500: rgb(243, 176, 28);
-  --cvx-yellow-700: rgb(213, 113, 21);
-  --cvx-yellow-900: rgb(109, 82, 23);
+  --cvx-yellow-500: rgb(245, 197, 66);
+  --cvx-yellow-700: rgb(225, 177, 46);
+  --cvx-yellow-900: rgb(195, 147, 26);
   --cvx-neutral-1: rgb(222, 226, 234);
   --cvx-neutral-2: rgb(204, 206, 211);
   --cvx-neutral-3: rgb(174, 177, 184);
@@ -44,13 +44,13 @@
   --cvx-neutral-10: rgb(57, 60, 66);
   --cvx-neutral-11: rgb(41, 43, 48);
   --cvx-neutral-12: rgb(24, 25, 28);
-  --cvx-accent: rgb(63, 82, 149);
+  --cvx-accent: rgb(91, 44, 131);
   --cvx-info: rgb(7, 191, 232);
-  --cvx-util-accent: rgb(38, 135, 246);
+  --cvx-util-accent: rgb(245, 197, 66);
   --cvx-util-info: rgb(7, 191, 232);
   --cvx-util-success: rgb(79, 176, 20);
   --cvx-util-danger: rgb(238, 52, 47);
-  --cvx-util-warning: rgb(243, 176, 28);
+  --cvx-util-warning: rgb(245, 197, 66);
 }
 
 /* Convex Tokens Light Theme (from Dashboard) */
@@ -75,36 +75,36 @@ html.light {
   --cvx-border-selected: rgb(30, 28, 25);
 }
 
-/* Convex Tokens Dark Theme (from Dashboard) */
+/* Dreamera Dark Theme - African-inspired premium colors */
 :root,
 html.dark {
-  --cvx-background-brand: rgb(30, 28, 26);
-  --cvx-background-primary: rgb(30, 28, 26);
-  --cvx-background-secondary: rgb(42, 40, 37);
-  --cvx-background-tertiary: rgb(60, 58, 65);
-  --cvx-background-highlight: rgb(109, 82, 23);
+  --cvx-background-brand: rgb(15, 15, 16);
+  --cvx-background-primary: rgb(15, 15, 16);
+  --cvx-background-secondary: rgb(25, 25, 28);
+  --cvx-background-tertiary: rgb(35, 35, 40);
+  --cvx-background-highlight: rgb(91, 44, 131);
   --cvx-background-success: rgb(44, 83, 20);
   --cvx-background-warning: rgb(109, 82, 23);
   --cvx-background-error: rgb(107, 33, 31);
   --cvx-background-error-secondary: rgb(168, 21, 21);
-  --cvx-content-accent: rgb(99, 168, 248);
+  --cvx-content-accent: rgb(245, 197, 66);
   --cvx-content-success: rgb(180, 236, 146);
   --cvx-content-warning: rgb(230, 226, 168);
   --cvx-content-error: rgb(255, 202, 193);
   --cvx-content-error-secondary: rgb(253, 76, 65);
-  --cvx-content-link: rgb(177, 202, 240);
-  --cvx-border-transparent: rgba(163, 156, 148, 0.3);
-  --cvx-border-selected: rgb(225, 215, 205);
+  --cvx-content-link: rgb(245, 197, 66);
+  --cvx-border-transparent: rgba(91, 44, 131, 0.3);
+  --cvx-border-selected: rgb(245, 197, 66);
 }
 
-/* Color Tokens */
+/* Dreamera Color Tokens */
 :root {
   --bolt-elements-bg-depth-1: var(--cvx-background-secondary);
   --bolt-elements-bg-depth-2: var(--cvx-background-primary);
 
-  --bolt-elements-button-primary-background: var(--cvx-accent);
-  --bolt-elements-button-primary-backgroundHover: color-mix(in srgb, var(--cvx-accent) 80%, transparent);
-  --bolt-elements-button-primary-text: theme('colors.white');
+  --bolt-elements-button-primary-background: rgb(91, 44, 131);
+  --bolt-elements-button-primary-backgroundHover: rgb(111, 64, 151);
+  --bolt-elements-button-primary-text: rgb(245, 197, 66);
 
   --bolt-elements-button-secondary-background: var(--cvx-background-secondary);
   --bolt-elements-button-secondary-backgroundHover: var(--cvx-background-tertiary);
@@ -115,10 +115,10 @@ html.dark {
   --bolt-elements-button-danger-text: var(--cvx-content-error);
 
   --bolt-elements-loader-background: var(--cvx-neutral-4);
-  --bolt-elements-loader-progress: var(--cvx-content-link);
+  --bolt-elements-loader-progress: rgb(245, 197, 66);
 
   --bolt-elements-messages-background: var(--cvx-background-primary);
-  --bolt-elements-messages-linkColor: var(--cvx-content-link);
+  --bolt-elements-messages-linkColor: rgb(245, 197, 66);
 
   --bolt-elements-artifacts-background: var(--cvx-background-secondary);
   --bolt-elements-artifacts-backgroundHover: var(--cvx-background-primary);
@@ -136,8 +136,8 @@ html.dark {
   --bolt-elements-preview-addressBar-text: var(--cvx-content-secondary);
   --bolt-elements-preview-addressBar-textActive: var(--cvx-content-primary);
 
-  --bolt-elements-item-backgroundAccent: var(--cvx-background-tertiary);
-  --bolt-elements-item-contentAccent: var(--cvx-content-primary);
+  --bolt-elements-item-backgroundAccent: rgb(91, 44, 131);
+  --bolt-elements-item-contentAccent: rgb(245, 197, 66);
 
   --bolt-elements-actions-code-background: theme('colors.gray.900');
 }

@@ -155,12 +155,12 @@ const ShowInner: FC<ShowInnerProps> = ({ share, className }) => {
             tip={
               typeof window !== 'undefined' && window.innerWidth < 768
                 ? undefined
-                : `New users: clone this app and get 85,000 bonus Chef tokens, plus some for the author of this app!
+                : `New users: clone this app and get 85,000 bonus Dreamera tokens, plus some for the author of this app!
 ` /* TODO this is buggy */
             }
           >
-            <span className="hidden md:inline">Clone app in Chef</span>
-            <span className="inline md:hidden">What&apos;s Chef?</span>
+            <span className="hidden md:inline">Clone app in Dreamera</span>
+            <span className="inline md:hidden">What&apos;s Dreamera?</span>
           </Button>
         </div>
       </div>
@@ -177,7 +177,7 @@ const ShowInner: FC<ShowInnerProps> = ({ share, className }) => {
             </Button>
           ) : (
             <Button href="/" variant="primary" className="ml-2">
-              Try Chef
+              Try Dreamera
             </Button>
           )}
         </div>
@@ -227,12 +227,12 @@ const ShowInner: FC<ShowInnerProps> = ({ share, className }) => {
       {share.referralCode && (
         <div className="mt-2 hidden rounded-lg border border-bolt-elements-background-depth-3 bg-bolt-elements-background-depth-2 p-4 md:block">
           <div className="text-center">
-            <p className="text-base font-medium text-content-primary">Join Convex and get 85,000 bonus Chef tokens.</p>
+            <p className="text-base font-medium text-content-primary">Join Convex and get 85,000 bonus Dreamera tokens.</p>
             <p className="mt-1 text-xs text-content-secondary">
               When you sign up, {author.username} will earn bonus resources too!
             </p>
             <Button
-              href={`https://convex.dev/try-chef/${share.referralCode}`}
+              href={`https://convex.dev/try-dreamera/${share.referralCode}`}
               target="_blank"
               variant="primary"
               className="mt-2"

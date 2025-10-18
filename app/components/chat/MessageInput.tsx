@@ -49,13 +49,13 @@ type Highlight = {
 const HIGHLIGHTS: Highlight[] = [
   {
     text: 'ai chat',
-    tooltip: 'Unless otherwise configured, Chef will prototype with GPT‑4o mini or GPT‑4.1 nano (limits apply).',
+    tooltip: 'Unless otherwise configured, Dreamera will prototype with GPT‑4o mini or GPT‑4.1 nano (limits apply).',
   },
   {
     text: 'collaborative text editor',
     tooltip: (
       <>
-        Chef will use the{' '}
+        Dreamera will use the{' '}
         <TooltipLink href="https://www.convex.dev/components/prosemirror-sync">Collaborative Text Editor</TooltipLink>{' '}
         Convex <TooltipLink href="https://www.convex.dev/components">component</TooltipLink>.
       </>
@@ -65,7 +65,7 @@ const HIGHLIGHTS: Highlight[] = [
     text: 'upload',
     tooltip: (
       <>
-        Chef will use Convex’s built-in{' '}
+        Dreamera will use Convex's built-in{' '}
         <TooltipLink href="https://docs.convex.dev/file-storage">file upload capabilities</TooltipLink>.
       </>
     ),
@@ -74,7 +74,7 @@ const HIGHLIGHTS: Highlight[] = [
     text: 'full text search',
     tooltip: (
       <>
-        Chef will use Convex’s built-in{' '}
+        Dreamera will use Convex's built-in{' '}
         <TooltipLink href="https://docs.convex.dev/search/text-search">full text search</TooltipLink> capabilities.
       </>
     ),
@@ -83,7 +83,7 @@ const HIGHLIGHTS: Highlight[] = [
     text: 'presence',
     tooltip: (
       <>
-        Chef will use the <TooltipLink href="https://www.convex.dev/components/presence">Presence</TooltipLink>{' '}
+        Dreamera will use the <TooltipLink href="https://www.convex.dev/components/presence">Presence</TooltipLink>{' '}
         Convex&nbsp;<TooltipLink href="https://www.convex.dev/components">component</TooltipLink>.
       </>
     ),
@@ -251,22 +251,30 @@ export const MessageInput = memo(function MessageInput({
   );
 
   return (
-    <div className="relative z-20 mx-auto w-full max-w-chat rounded-xl shadow transition-all duration-200">
-      <div className="rounded-xl bg-background-primary/75 backdrop-blur-md">
-        <div className="rounded-t-xl border transition-all has-[textarea:focus]:border-border-selected">
+    <div className={classNames(
+      "relative z-20 mx-auto w-full transition-all duration-200",
+      chatStarted ? "max-w-chat" : "max-w-4xl"
+    )}>
+      <div className={classNames(
+        "rounded-2xl border-2 backdrop-blur-md transition-all",
+        chatStarted 
+          ? "border-[#5B2C83]/30 bg-[#1a1a1c]/95 hover:border-[#5B2C83]/50 has-[textarea:focus]:border-[#F5C542] has-[textarea:focus]:shadow-lg has-[textarea:focus]:shadow-[#F5C542]/20" 
+          : "border-[#5B2C83]/20 bg-[#0A0F1E]/90 shadow-2xl shadow-[#5B2C83]/10 has-[textarea:focus]:border-[#5B2C83]/50 has-[textarea:focus]:shadow-2xl has-[textarea:focus]:shadow-[#5B2C83]/20"
+      )}>
+        <div className="rounded-t-2xl">
           <TextareaWithHighlights
             onKeyDown={handleKeyDown}
             onChange={handleChange}
             value={input}
             chatStarted={chatStarted}
-            minHeight={100}
-            maxHeight={chatStarted ? 400 : 200}
+            minHeight={chatStarted ? 100 : 120}
+            maxHeight={chatStarted ? 400 : 300}
             placeholder={
               chatStarted
                 ? numMessages !== undefined && numMessages > 0
-                  ? 'Request changes by sending another message…'
-                  : 'Send a prompt for a new feature…'
-                : 'What app do you want to serve?'
+                  ? 'What changes would you like to make?'
+                  : 'Describe the feature you want to add…'
+                : 'A modern portfolio website with dark theme and contact form'
             }
             disabled={disabled}
             highlights={HIGHLIGHTS}
@@ -274,7 +282,8 @@ export const MessageInput = memo(function MessageInput({
         </div>
         <div
           className={classNames(
-            'flex items-center gap-2 border rounded-b-xl border-t-0 bg-background-secondary/80 p-1.5 text-sm flex-wrap',
+            'flex items-center gap-2 rounded-b-2xl border-t p-2 text-sm flex-wrap',
+            chatStarted ? 'border-[#5B2C83]/20 bg-[#0F0F10]/50' : 'border-[#5B2C83]/10 bg-[#0A0F1E]/50'
           )}
         >
           {chefAuthState.kind === 'fullyLoggedIn' && (
@@ -308,9 +317,9 @@ export const MessageInput = memo(function MessageInput({
                 placement="top-start"
               >
                 <div className="ml-3 flex items-center gap-1">
-                  <h2 className="text-sm font-bold">Use a recipe</h2>
-                  <Tooltip tip="Recipes are Chef prompts that add powerful full-stack features to your app." side="top">
-                    <span className="cursor-help text-content-tertiary">
+                  <h2 className="text-sm font-bold text-[#F5C542]">Use a recipe</h2>
+                  <Tooltip tip="Recipes are Dreamera prompts that add powerful full-stack features to your app." side="top">
+                    <span className="cursor-help text-gray-400 hover:text-[#F5C542]">
                       <InformationCircleIcon className="size-4" />
                     </span>
                   </Tooltip>
@@ -364,19 +373,24 @@ export const MessageInput = memo(function MessageInput({
                     : undefined
               }
               onClick={handleClickButton}
-              size="xs"
-              className="ml-2 h-[1.625rem]"
+              size={chatStarted ? "xs" : "sm"}
+              className={classNames(
+                "ml-2 bg-gradient-to-r from-[#5B2C83] to-[#7A3CA3] text-[#F5C542] hover:shadow-lg hover:shadow-[#5B2C83]/50 disabled:opacity-50",
+                chatStarted ? "h-[1.625rem]" : "h-[2.5rem] px-6 text-base font-semibold"
+              )}
               aria-label={isStreaming ? 'Stop' : 'Send'}
               icon={
                 sendMessageInProgress ? (
-                  <Spinner className="text-white" />
+                  <Spinner className="text-[#F5C542]" />
                 ) : !isStreaming ? (
-                  <ArrowRightIcon />
+                  <ArrowRightIcon className="text-[#F5C542]" />
                 ) : (
-                  <StopIcon />
+                  <StopIcon className="text-[#F5C542]" />
                 )
               }
-            />
+            >
+              {!chatStarted && !isStreaming && !sendMessageInProgress && <span>Generate</span>}
+            </Button>
           </div>
         </div>
       </div>
@@ -388,6 +402,7 @@ const TextareaWithHighlights = memo(function TextareaWithHighlights({
   onKeyDown,
   onChange,
   value,
+  chatStarted,
   minHeight,
   maxHeight,
   placeholder,
@@ -435,11 +450,15 @@ const TextareaWithHighlights = memo(function TextareaWithHighlights({
     <div className="relative overflow-y-auto" style={{ minHeight, maxHeight }}>
       <textarea
         ref={textareaRef}
+        name="chat-input"
         className={classNames(
-          'w-full px-3 py-3 outline-none resize-none text-content-primary placeholder-content-tertiary bg-transparent text-sm leading-snug',
-          'transition-opacity',
+          'w-full outline-none resize-none text-white bg-transparent leading-relaxed',
+          'transition-all',
           'disabled:opacity-50 disabled:cursor-not-allowed',
-          'scrollbar-thin scrollbar-thumb-macosScrollbar-thumb scrollbar-track-transparent',
+          'scrollbar-thin scrollbar-thumb-[#5B2C83] scrollbar-track-transparent',
+          chatStarted 
+            ? 'px-4 py-4 text-base placeholder-gray-400' 
+            : 'px-6 py-5 text-lg placeholder-gray-500/60'
         )}
         disabled={disabled}
         onKeyDown={onKeyDown}
@@ -567,7 +586,7 @@ const HighlightTooltip = memo(function HighlightTooltip({
 }) {
   return (
     <div
-      className="absolute flex overflow-hidden bg-[#f8d077] mix-blend-color"
+      className="absolute flex overflow-hidden bg-[#F5C542]/40 mix-blend-color"
       style={{
         width,
         height,
@@ -593,10 +612,10 @@ const NewLineShortcut = memo(function NewLineShortcut() {
 const CharacterWarning = memo(function CharacterWarning() {
   return (
     <Tooltip
-      tip="Chef performs better with shorter prompts. Consider making your prompt more concise or breaking it into smaller chunks."
+      tip="Dreamera performs better with shorter prompts. Consider making your prompt more concise or breaking it into smaller chunks."
       side="bottom"
     >
-      <div className="flex cursor-help items-center text-xs text-content-warning">
+      <div className="flex cursor-help items-center text-xs text-orange-400">
         <ExclamationTriangleIcon className="mr-1 size-4" />
         Prompt exceeds {PROMPT_LENGTH_WARNING_THRESHOLD.toLocaleString()} characters
       </div>

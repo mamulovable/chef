@@ -293,8 +293,8 @@ export const validateOpenrouterApiKey = action({
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${args.apiKey}`,
-        "HTTP-Referer": "https://chef.convex.dev",
-        "X-Title": "Chef - AI Full-Stack App Builder",
+        "HTTP-Referer": "https://dreamera.ai",
+        "X-Title": "Dreamera - AI Full-Stack App Builder",
       },
     });
     if (response.status === 401) {

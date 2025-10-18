@@ -39,6 +39,11 @@ export default {
       },
       colors: {
         ...TailwindConfig.theme?.extend?.colors,
+        dreamera: {
+          purple: '#5B2C83',
+          gold: '#F5C542',
+          background: '#0F0F10',
+        },
         bolt: {
           elements: {
             background: {
