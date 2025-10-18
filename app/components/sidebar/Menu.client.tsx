@@ -167,6 +167,9 @@ export const Menu = memo(({ isOpen, onClose }: MenuProps) => {
             <Button className="w-fit" href="/" icon={<PlusIcon />}>
               Start new project
             </Button>
+            <Button className="w-fit" href="/templates" variant="outline">
+              Browse Templates
+            </Button>
             <div className="relative w-full">
               <TextInput
                 id="search-projects"

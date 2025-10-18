@@ -241,4 +241,44 @@ export default defineSchema({
   })
     .index("name", ["name"])
     .index("isDone", ["isDone"]),
+
+  // Templates for users to start with
+  templates: defineTable({
+    name: v.string(),
+    description: v.string(),
+    category: v.string(), // e.g., "Landing Page", "Portfolio", "Blog", "Storefront", "Dashboard"
+    thumbnailUrl: v.optional(v.string()),
+    previewUrl: v.optional(v.string()),
+    // Template content as a snapshot of the template directory structure
+    templateSnapshotId: v.optional(v.id("_storage")),
+    // AI tags for the agent to understand when to use this template
+    aiTags: v.array(v.string()),
+    // Whether this is a built-in template or user-created
+    isBuiltIn: v.boolean(),
+    // For user-created templates, track the creator
+    creatorId: v.optional(v.id("convexMembers")),
+    // Version tracking
+    version: v.number(),
+    // Template metadata
+    metadata: v.optional(v.object({
+      techStack: v.array(v.string()),
+      features: v.array(v.string()),
+      estimatedBuildTime: v.optional(v.string()),
+    })),
+  })
+    .index("byCategory", ["category"])
+    .index("byCreator", ["creatorId"])
+    .index("byBuiltIn", ["isBuiltIn"])
+    .index("byName", ["name"]),
+
+  // User template usage tracking
+  userTemplateUsage: defineTable({
+    userId: v.id("convexMembers"),
+    templateId: v.id("templates"),
+    chatId: v.id("chats"),
+    usedAt: v.number(),
+  })
+    .index("byUser", ["userId"])
+    .index("byTemplate", ["templateId"])
+    .index("byChat", ["chatId"]),
 });

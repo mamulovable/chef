@@ -72,7 +72,15 @@ export function BuilderHeader({ hideSidebarIcon = false }: { hideSidebarIcon?: b
           <span className="text-xl font-bold text-[#F5C542]">Dreamera</span>
         </a>
         {!chat.started && (
-          <span className="ml-4 hidden text-sm text-gray-400 md:inline">What will you dream today?</span>
+          <div className="ml-4 hidden items-center gap-4 md:flex">
+            <span className="text-sm text-gray-400">What will you dream today?</span>
+            <a 
+              href="/templates" 
+              className="text-sm text-[#F5C542] hover:text-[#F5C542]/80 transition-colors"
+            >
+              Browse Templates
+            </a>
+          </div>
         )}
       </div>
       <>

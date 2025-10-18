@@ -125,6 +125,25 @@ export function LandingPage() {
                 {prompt}
               </button>
             ))}
+            <a
+              href="/templates"
+              className="rounded-full px-5 py-2 text-sm transition"
+              style={{
+                border: '1px solid var(--landing-accent-primary)',
+                backgroundColor: 'var(--landing-accent-primary)',
+                color: 'white',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'var(--landing-accent-primary)';
+                e.currentTarget.style.opacity = '0.9';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'var(--landing-accent-primary)';
+                e.currentTarget.style.opacity = '1';
+              }}
+            >
+              Browse Templates
+            </a>
           </div>
 
           {/* Social Proof */}

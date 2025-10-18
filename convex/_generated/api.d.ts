@@ -25,12 +25,14 @@ import type * as migrations from "../migrations.js";
 import type * as openaiProxy from "../openaiProxy.js";
 import type * as rateLimiter from "../rateLimiter.js";
 import type * as resendProxy from "../resendProxy.js";
+import type * as seedTemplates from "../seedTemplates.js";
 import type * as sessions from "../sessions.js";
 import type * as share from "../share.js";
 import type * as snapshot from "../snapshot.js";
 import type * as socialShare from "../socialShare.js";
 import type * as subchats from "../subchats.js";
 import type * as summarize from "../summarize.js";
+import type * as templates from "../templates.js";
 
 import type {
   ApiFromModules,
@@ -64,12 +66,14 @@ declare const fullApi: ApiFromModules<{
   openaiProxy: typeof openaiProxy;
   rateLimiter: typeof rateLimiter;
   resendProxy: typeof resendProxy;
+  seedTemplates: typeof seedTemplates;
   sessions: typeof sessions;
   share: typeof share;
   snapshot: typeof snapshot;
   socialShare: typeof socialShare;
   subchats: typeof subchats;
   summarize: typeof summarize;
+  templates: typeof templates;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 

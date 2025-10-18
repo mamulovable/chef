@@ -47,6 +47,8 @@ import { useReferralCode, useReferralStats } from '~/lib/hooks/useReferralCode';
 import { useUsage } from '~/lib/stores/usage';
 import { hasAnyApiKeySet, hasApiKeySet } from '~/lib/common/apiKey';
 import { chatSyncState } from '~/lib/stores/startup/chatSyncState';
+import { messageInputStore } from '~/lib/stores/messageInput';
+import { useTemplateEnhancement } from '~/lib/hooks/useTemplateEnhancement';
 
 const logger = createScopedLogger('Chat');
 
@@ -86,6 +88,8 @@ interface ChatProps {
   isReload: boolean;
   hadSuccessfulDeploy: boolean;
   subchats?: { subchatIndex: number; updatedAt: number; description?: string }[];
+  initialPrompt?: string | null;
+  initialTemplate?: string | null;
 }
 
 const retryState = atom({
@@ -101,12 +105,26 @@ export const Chat = memo(
     isReload,
     hadSuccessfulDeploy,
     subchats,
+    initialPrompt,
+    initialTemplate,
   }: ChatProps) => {
     const convex = useConvex();
     const sessionId = useConvexSessionIdOrNullOrLoading();
     const [chatStarted, setChatStarted] = useState(initialMessages.length > 0 || (!!subchats && subchats.length > 1));
     const actionAlert = useStore(workbenchStore.alert);
     const syncState = useStore(chatSyncState);
+
+    // Template enhancement
+    const { template, enhancePromptWithTemplate } = useTemplateEnhancement(initialTemplate);
+
+    // Handle initial prompt and template
+    useEffect(() => {
+      if (initialPrompt && !chatStarted) {
+        // Enhance the prompt with template context if available
+        const enhancedPrompt = initialTemplate ? enhancePromptWithTemplate(initialPrompt) : initialPrompt;
+        messageInputStore.set(enhancedPrompt);
+      }
+    }, [initialPrompt, initialTemplate, chatStarted, enhancePromptWithTemplate]);
 
     const rewindToMessage = async (subchatIndex?: number, messageIndex?: number) => {
       if (sessionId && typeof sessionId === 'string') {
@@ -539,6 +557,22 @@ export const Chat = memo(
         const chatInitialized = await initializeChat();
         if (!chatInitialized) {
           return;
+        }
+
+        // Track template usage if we have a template
+        if (initialTemplate && sessionId && typeof sessionId === 'string') {
+          try {
+            const chatId = chatIdStore.get();
+            if (chatId) {
+              await convex.mutation(api.templates.trackTemplateUsage, {
+                templateId: initialTemplate as any,
+                chatId: chatId as any,
+              });
+            }
+          } catch (error) {
+            console.error('Failed to track template usage:', error);
+            // Don't fail the message send if template tracking fails
+          }
         }
 
         runAnimation();
