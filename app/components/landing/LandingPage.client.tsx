@@ -51,7 +51,12 @@ export function LandingPage() {
             color: 'var(--landing-text-primary)' 
           }}>
             Build Your Dream Website{' '}
-            <span className="bg-gradient-to-r from-[#3B82F6] to-[#60A5FA] bg-clip-text text-transparent">
+            <span style={{
+              background: 'linear-gradient(135deg, var(--landing-accent-primary) 0%, var(--landing-accent-secondary) 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>
               Effortlessly
             </span>
           </h1>
@@ -155,7 +160,7 @@ export function LandingPage() {
                   className="size-10 rounded-full border-2"
                   style={{
                     borderColor: 'var(--landing-bg-primary)',
-                    background: 'linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)',
+                    background: 'linear-gradient(135deg, var(--landing-accent-primary) 0%, var(--landing-accent-secondary) 100%)',
                   }}
                 />
               ))}
@@ -334,7 +339,7 @@ export function LandingPage() {
                 <div 
                   className="mb-6 flex size-20 items-center justify-center rounded-full"
                   style={{
-                    background: 'linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)',
+                    background: 'linear-gradient(135deg, var(--landing-accent-primary) 0%, var(--landing-accent-secondary) 100%)',
                     animation: activeStep === 0 ? 'pulse 2s ease-in-out infinite' : 'none',
                   }}
                 >
@@ -379,7 +384,7 @@ export function LandingPage() {
                     <div className="mb-3 flex items-center gap-2">
                       <div 
                         className="flex size-8 items-center justify-center rounded-full"
-                        style={{ background: 'linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)' }}
+                        style={{ background: 'linear-gradient(135deg, var(--landing-accent-primary) 0%, var(--landing-accent-secondary) 100%)' }}
                       >
                         <BoltIcon className="size-4 text-white" />
                       </div>
@@ -500,7 +505,7 @@ export function LandingPage() {
                   <div 
                     className="mb-6 flex size-20 items-center justify-center rounded-full mx-auto"
                     style={{
-                      background: 'linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)',
+                      background: 'linear-gradient(135deg, var(--landing-accent-primary) 0%, var(--landing-accent-secondary) 100%)',
                     }}
                   >
                     <RocketIcon className="size-10 text-white" />
@@ -624,7 +629,7 @@ export function LandingPage() {
                   Live App
                 </div>
                 <div className="mb-4 flex size-16 items-center justify-center rounded-xl" style={{
-                  background: 'linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)',
+                  background: 'linear-gradient(135deg, var(--landing-accent-primary) 0%, var(--landing-accent-secondary) 100%)',
                 }}>
                   <BoltIcon className="size-8 text-white" />
                 </div>
@@ -679,7 +684,7 @@ export function LandingPage() {
               >
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-sm font-semibold text-white" style={{
-                    background: 'linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)',
+                    background: 'linear-gradient(135deg, var(--landing-accent-primary) 0%, var(--landing-accent-secondary) 100%)',
                   }}>
                     Most Popular
                   </div>
@@ -751,9 +756,9 @@ export function LandingPage() {
                 <div className="mb-4 text-4xl" style={{ color: 'var(--landing-accent-primary)' }}>"</div>
                 <p className="mb-6" style={{ color: 'var(--landing-text-secondary)' }}>{testimonial.quote}</p>
                 <div className="flex items-center gap-3">
-                  <div className="size-12 rounded-full" style={{
-                    background: 'linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)',
-                  }} />
+                <div className="size-12 rounded-full" style={{
+                  background: 'linear-gradient(135deg, var(--landing-accent-primary) 0%, var(--landing-accent-secondary) 100%)',
+                }} />
                   <div>
                     <div className="font-semibold" style={{ color: 'var(--landing-text-primary)' }}>
                       {testimonial.name}
@@ -840,13 +845,13 @@ export function LandingPage() {
           <p className="mx-auto mb-12 max-w-2xl text-xl" style={{ color: 'var(--landing-text-secondary)' }}>
             Launch your web app idea today — no development team, no complexity.
           </p>
-          <a
-            href="/chat"
-            className="landing-button-primary inline-block text-xl"
-            style={{ padding: '20px 48px', fontSize: '1.25rem' }}
-          >
-            Start Building for Free
-          </a>
+            <a
+              href="/chat"
+              className="landing-button-primary inline-block text-xl"
+              style={{ padding: '20px 48px', fontSize: '1.25rem' }}
+            >
+              Start Building for Free
+            </a>
         </div>
       </section>
 
@@ -856,7 +861,7 @@ export function LandingPage() {
           <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <div className="flex size-10 items-center justify-center rounded-lg" style={{
-                background: 'linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)',
+                background: 'linear-gradient(135deg, var(--landing-accent-primary) 0%, var(--landing-accent-secondary) 100%)',
               }}>
                 <span className="text-xl font-bold text-white">D</span>
               </div>

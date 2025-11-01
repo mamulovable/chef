@@ -187,6 +187,32 @@ export const deleteOpenrouterApiKeyForCurrentMember = mutation({
   },
 });
 
+export const deleteHyperbolicApiKeyForCurrentMember = mutation({
+  args: {},
+  returns: v.null(),
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new ConvexError({ code: "NotAuthorized", message: "Unauthorized" });
+    }
+
+    const existingMember = await getMemberByConvexMemberIdQuery(ctx, identity).first();
+
+    if (!existingMember) {
+      throw new ConvexError({ code: "NotAuthorized", message: "Unauthorized" });
+    }
+    if (!existingMember.apiKey) {
+      return;
+    }
+    await ctx.db.patch(existingMember._id, {
+      apiKey: {
+        ...existingMember.apiKey,
+        hyperbolic: undefined,
+      },
+    });
+  },
+});
+
 export const validateAnthropicApiKey = action({
   args: {
     apiKey: v.string(),
@@ -295,6 +321,29 @@ export const validateOpenrouterApiKey = action({
         Authorization: `Bearer ${args.apiKey}`,
         "HTTP-Referer": "https://dreamera.ai",
         "X-Title": "Dreamera - AI Full-Stack App Builder",
+      },
+    });
+    if (response.status === 401) {
+      return false;
+    }
+    return true;
+  },
+});
+
+export const validateHyperbolicApiKey = action({
+  args: {
+    apiKey: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new ConvexError({ code: "NotAuthorized", message: "Unauthorized" });
+    }
+
+    const response = await fetch("https://api.hyperbolic.xyz/v1/models", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${args.apiKey}`,
       },
     });
     if (response.status === 401) {

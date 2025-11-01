@@ -11,6 +11,7 @@ export const apiKeyValidator = v.object({
   xai: v.optional(v.string()),
   google: v.optional(v.string()),
   openrouter: v.optional(v.string()),
+  hyperbolic: v.optional(v.string()),
 });
 
 // A stable-enough way to store token usage.
@@ -264,6 +265,8 @@ export default defineSchema({
       techStack: v.array(v.string()),
       features: v.array(v.string()),
       estimatedBuildTime: v.optional(v.string()),
+      templatePath: v.optional(v.string()),
+      snapshotFile: v.optional(v.string()),
     })),
   })
     .index("byCategory", ["category"])

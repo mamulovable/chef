@@ -27,6 +27,7 @@ export function ApiKeyCard() {
           xai: apiKey?.xai,
           google: apiKey?.google,
           openrouter: apiKey?.openrouter,
+          hyperbolic: apiKey?.hyperbolic,
         },
       });
       toast.success('Preference updated.', { id: value ? 'always' : 'quotaExhausted' });
@@ -64,6 +65,12 @@ export function ApiKeyCard() {
 
   const validateOpenrouterApiKey = async (apiKey: string) => {
     return await convex.action(api.apiKeys.validateOpenrouterApiKey, {
+      apiKey,
+    });
+  };
+
+  const validateHyperbolicApiKey = async (apiKey: string) => {
+    return await convex.action(api.apiKeys.validateHyperbolicApiKey, {
       apiKey,
     });
   };
@@ -175,13 +182,31 @@ export function ApiKeyCard() {
             value={apiKey?.openrouter || ''}
             onValidate={validateOpenrouterApiKey}
           />
+
+          <ApiKeyItem
+            label="Hyperbolic API key"
+            description={
+              <a
+                href="https://app.hyperbolic.xyz/settings"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-content-link hover:underline"
+              >
+                See instructions for generating a Hyperbolic API key
+              </a>
+            }
+            isLoading={apiKey === undefined}
+            keyType="hyperbolic"
+            value={apiKey?.hyperbolic || ''}
+            onValidate={validateHyperbolicApiKey}
+          />
         </div>
       </div>
     </div>
   );
 }
 
-type KeyType = 'anthropic' | 'google' | 'openai' | 'xai' | 'openrouter';
+type KeyType = 'anthropic' | 'google' | 'openai' | 'xai' | 'openrouter' | 'hyperbolic';
 
 function ApiKeyItem({
   label,
@@ -270,6 +295,10 @@ function ApiKeyItem({
           await convex.mutation(api.apiKeys.deleteOpenrouterApiKeyForCurrentMember);
           toast.success('OpenRouter API key removed', { id: 'openrouter-removed' });
           break;
+        case 'hyperbolic':
+          await convex.mutation(api.apiKeys.deleteHyperbolicApiKeyForCurrentMember);
+          toast.success('Hyperbolic API key removed', { id: 'hyperbolic-removed' });
+          break;
       }
     } catch (error) {
       captureException(error);
@@ -295,6 +324,7 @@ function ApiKeyItem({
         xai: apiKey?.xai || undefined,
         google: apiKey?.google || undefined,
         openrouter: apiKey?.openrouter || undefined,
+        hyperbolic: apiKey?.hyperbolic || undefined,
       };
 
       switch (keyType) {
@@ -312,6 +342,9 @@ function ApiKeyItem({
           break;
         case 'openrouter':
           apiKeyMutation.openrouter = cleanApiKey(newKeyValue);
+          break;
+        case 'hyperbolic':
+          apiKeyMutation.hyperbolic = cleanApiKey(newKeyValue);
           break;
       }
 

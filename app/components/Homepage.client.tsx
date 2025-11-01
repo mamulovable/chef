@@ -37,7 +37,7 @@ export function Homepage({ loaderData }: HomepageProps) {
 
 const ChatWrapper = ({ initialId, loaderData }: { initialId: string; loaderData?: HomepageProps['loaderData'] }) => {
   const partCache = useRef<PartCache>(new Map());
-  const { storeMessageHistory, initializeChat, initialMessages, subchats } = useConvexChatHomepage(initialId);
+  const { storeMessageHistory, initializeChat, initialMessages, subchats } = useConvexChatHomepage(initialId, loaderData?.template);
   
   // If we have a prompt or template from URL params, we'll handle it in the Chat component
   return (

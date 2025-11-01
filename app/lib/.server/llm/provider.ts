@@ -56,6 +56,8 @@ export function modelForProvider(provider: ModelProvider, modelChoice: string | 
     case 'OpenRouter':
       // Default to a free, generally available model if none selected
       return getEnv('OPENROUTER_MODEL') || 'meta-llama/llama-3.3-70b-instruct:free';
+    case 'Hyperbolic':
+      return getEnv('HYPERBOLIC_MODEL') || 'Qwen/Qwen2.5-Coder-32B-Instruct';
     default: {
       const _exhaustiveCheck: never = provider;
       throw new Error(`Unknown provider: ${_exhaustiveCheck}`);
@@ -162,6 +164,20 @@ export function getProvider(
       provider = {
         model: openrouter(model),
         maxTokens: 16384,
+      };
+      break;
+    }
+    case 'Hyperbolic': {
+      model = modelForProvider(modelProvider, modelChoice);
+      const hyperbolic = createOpenAI({
+        apiKey: userApiKey || getEnv('HYPERBOLIC_API_KEY'),
+        baseURL: 'https://api.hyperbolic.xyz/v1',
+        fetch: userApiKey ? userKeyApiFetch('Hyperbolic') : fetch,
+        compatibility: 'strict',
+      });
+      provider = {
+        model: hyperbolic(model),
+        maxTokens: 8192,
       };
       break;
     }

@@ -215,7 +215,7 @@ export const Chat = memo(
         const MODEL_TO_PROVIDER_MAP: {
           [K in ModelSelection]: {
             providerName: ModelProvider;
-            apiKeyField: 'value' | 'openai' | 'xai' | 'google' | 'openrouter';
+            apiKeyField: 'value' | 'openai' | 'xai' | 'google' | 'openrouter' | 'hyperbolic';
           };
         } = {
           auto: { providerName: 'anthropic', apiKeyField: 'value' },
@@ -225,8 +225,11 @@ export const Chat = memo(
           'gpt-5': { providerName: 'openai', apiKeyField: 'openai' },
           'grok-3-mini': { providerName: 'xai', apiKeyField: 'xai' },
           'gemini-2.5-pro': { providerName: 'google', apiKeyField: 'google' },
+          'gemini-2.5-flash': { providerName: 'google', apiKeyField: 'google' },
           'claude-3-5-haiku': { providerName: 'anthropic', apiKeyField: 'value' },
           'gpt-4.1-mini': { providerName: 'openai', apiKeyField: 'openai' },
+          'Qwen/Qwen3-Coder-480B-A35B-Instruct': { providerName: 'hyperbolic', apiKeyField: 'hyperbolic' },
+          'Qwen/Qwen2.5-Coder-32B-Instruct': { providerName: 'hyperbolic', apiKeyField: 'hyperbolic' },
 'meta-llama/llama-3.3-70b-instruct:free': { providerName: 'openrouter', apiKeyField: 'openrouter' },
 'z-ai/glm-4.5-air:free': { providerName: 'openrouter', apiKeyField: 'openrouter' },
           'openai/gpt-oss-20b:free': { providerName: 'openrouter', apiKeyField: 'openrouter' },
@@ -338,6 +341,9 @@ export const Chat = memo(
           modelProvider = 'XAI';
         } else if (modelSelection === 'gemini-2.5-pro') {
           modelProvider = 'Google';
+        } else if (modelSelection === 'gemini-2.5-flash') {
+          modelProvider = 'Google';
+          modelChoice = 'gemini-2.5-flash';
         } else if (modelSelection === 'gpt-4.1-mini') {
           modelProvider = 'OpenAI';
           modelChoice = 'gpt-4.1-mini';
@@ -352,6 +358,12 @@ export const Chat = memo(
           modelSelection === 'openai/gpt-oss-20b:free'
         ) {
           modelProvider = 'OpenRouter';
+          modelChoice = modelSelection;
+        } else if (
+          modelSelection === 'Qwen/Qwen3-Coder-480B-A35B-Instruct' ||
+          modelSelection === 'Qwen/Qwen2.5-Coder-32B-Instruct'
+        ) {
+          modelProvider = 'Hyperbolic';
           modelChoice = modelSelection;
         } else {
           const _exhaustiveCheck: never = modelSelection;
@@ -402,6 +414,7 @@ export const Chat = memo(
           featureFlags: {
             enableResend,
           },
+          templateContext: template,
         };
       },
       maxSteps: 64,
@@ -870,6 +883,7 @@ function maxSizeForModel(modelSelection: ModelSelection, maxSize: number) {
   switch (modelSelection) {
     case 'auto':
     case 'gemini-2.5-pro':
+    case 'gemini-2.5-flash':
       return maxSize;
     default:
       // For non-anthropic models not yet using caching, use a lower message size limit.

@@ -10,7 +10,7 @@ import type { Doc } from '@convex/_generated/dataModel';
 import { captureMessage } from '@sentry/remix';
 import { useLaunchDarkly } from '~/lib/hooks/useLaunchDarkly';
 
-export type ModelProvider = 'openai' | 'google' | 'xai' | 'anthropic' | 'openrouter' | 'auto';
+export type ModelProvider = 'openai' | 'google' | 'xai' | 'anthropic' | 'openrouter' | 'hyperbolic' | 'auto';
 
 export function displayModelProviderName(provider: ModelProvider) {
   switch (provider) {
@@ -24,6 +24,8 @@ export function displayModelProviderName(provider: ModelProvider) {
       return 'Anthropic';
     case 'openrouter':
       return 'OpenRouter';
+    case 'hyperbolic':
+      return 'Hyperbolic';
     case 'auto':
       return 'Anthropic';
     default: {
@@ -48,6 +50,14 @@ const providerToIcon: Record<string, React.ReactNode> = {
   openai: svgIcon('/icons/openai.svg'),
   anthropic: svgIcon('/icons/claude.svg'),
   google: svgIcon('/icons/gemini.svg'),
+  hyperbolic: (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
   openrouter: (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -120,6 +130,12 @@ export const models: Partial<
     recommended: false,
     provider: 'google',
   },
+  'gemini-2.5-flash': {
+    name: 'Gemini 2.5 Flash',
+    recommended: false,
+    provider: 'google',
+    requireKey: true,
+  },
   'gpt-4.1': {
     name: 'GPT-4.1',
     provider: 'openai',
@@ -156,6 +172,17 @@ export const models: Partial<
     name: 'GPT OSS 20B (Free)',
     provider: 'openrouter',
     requireKey: true,
+  },
+  'Qwen/Qwen3-Coder-480B-A35B-Instruct': {
+    name: 'Qwen3 Coder 480B',
+    provider: 'hyperbolic',
+    requireKey: true,
+  },
+  'Qwen/Qwen2.5-Coder-32B-Instruct': {
+    name: 'Qwen2.5 Coder 32B',
+    provider: 'hyperbolic',
+    requireKey: true,
+    recommended: false,
   },
 } as const;
 
@@ -254,6 +281,9 @@ const keyForProvider = (apiKeys: Doc<'convexMembers'>['apiKey'], provider: Model
   }
   if (provider === 'openrouter') {
     return apiKeys?.openrouter;
+  }
+  if (provider === 'hyperbolic') {
+    return apiKeys?.hyperbolic;
   }
   return apiKeys?.[provider];
 };

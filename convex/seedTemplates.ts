@@ -16,6 +16,8 @@ export const seedBuiltInTemplates = mutation({
           techStack: ["React", "TailwindCSS", "Convex"],
           features: ["Hero Section", "Features", "Testimonials", "Contact Form", "Responsive Design"],
           estimatedBuildTime: "2-3 hours",
+          templatePath: "template-landing",
+          snapshotFile: "template-landing-snapshot-d8e602e7.bin",
         },
       },
       {
@@ -27,6 +29,8 @@ export const seedBuiltInTemplates = mutation({
           techStack: ["React", "TailwindCSS", "Convex"],
           features: ["Project Gallery", "About Section", "Skills", "Contact Form", "Resume Download"],
           estimatedBuildTime: "3-4 hours",
+          templatePath: "template-portfolio",
+          snapshotFile: "template-portfolio-snapshot-59bac648.bin",
         },
       },
       {
@@ -38,6 +42,8 @@ export const seedBuiltInTemplates = mutation({
           techStack: ["React", "TailwindCSS", "Convex"],
           features: ["Article List", "Article Detail", "Categories", "Search", "Comments", "Admin Panel"],
           estimatedBuildTime: "4-5 hours",
+          templatePath: "template-blog",
+          snapshotFile: "template-blog-snapshot-55337381.bin",
         },
       },
       {
@@ -49,6 +55,8 @@ export const seedBuiltInTemplates = mutation({
           techStack: ["React", "TailwindCSS", "Convex"],
           features: ["Product Catalog", "Shopping Cart", "Checkout", "Payment Integration", "Order Management"],
           estimatedBuildTime: "6-8 hours",
+          templatePath: "template-storefront",
+          snapshotFile: "template-storefront-snapshot-4b8dec8b.bin",
         },
       },
       {
@@ -60,6 +68,8 @@ export const seedBuiltInTemplates = mutation({
           techStack: ["React", "TailwindCSS", "Convex"],
           features: ["Data Visualization", "Charts", "Tables", "Filters", "User Management", "Settings"],
           estimatedBuildTime: "5-7 hours",
+          templatePath: "template-dashboard",
+          snapshotFile: "template-dashboard-snapshot-1f18c4af.bin",
         },
       },
     ];

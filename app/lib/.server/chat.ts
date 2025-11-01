@@ -78,6 +78,20 @@ export async function chatAction({ request }: ActionFunctionArgs) {
     featureFlags: {
       enableResend?: boolean;
     };
+    templateContext?: {
+      _id: string;
+      name: string;
+      description: string;
+      category: string;
+      aiTags: string[];
+      metadata?: {
+        techStack?: string[];
+        features?: string[];
+        estimatedBuildTime?: string;
+        templatePath?: string;
+        snapshotFile?: string;
+      };
+    } | null;
   };
   const { messages, firstUserMessage, chatInitialId, deploymentName, token, teamSlug, recordRawPromptsForDebugging } =
     body;
@@ -201,6 +215,7 @@ export async function chatAction({ request }: ActionFunctionArgs) {
       featureFlags: {
         enableResend: body.featureFlags.enableResend ?? false,
       },
+      templateContext: body.templateContext,
     });
 
     return new Response(dataStream, {

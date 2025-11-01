@@ -10,13 +10,13 @@ import { useConvexSessionIdOrNullOrLoading } from '~/lib/stores/sessionId';
 import { useQuery } from 'convex/react';
 import { api } from '@convex/_generated/api';
 
-export function useConvexChatHomepage(chatId: string) {
+export function useConvexChatHomepage(chatId: string, templateId?: string | null) {
   useTeamsInitializer();
   useProjectInitializer(chatId);
   const [chatInitialized, setChatInitialized] = useState(false);
   const initializeChat = useHomepageInitializeChat(chatId, setChatInitialized);
   const storeMessageHistory = useStoreMessageHistory();
-  useNewChatContainerSetup();
+  useNewChatContainerSetup(templateId);
   const initialMessages = useInitialMessages(chatInitialized ? chatId : undefined);
   useBackupSyncState(chatId, initialMessages?.loadedSubchatIndex, initialMessages?.deserialized);
   const sessionId = useConvexSessionIdOrNullOrLoading();

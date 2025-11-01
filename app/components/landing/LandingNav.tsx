@@ -10,14 +10,14 @@ export function LandingNav() {
   return (
     <nav className="fixed top-0 z-50 w-full border-b backdrop-blur-xl" style={{ 
       borderColor: 'var(--landing-border-color)',
-      backgroundColor: theme === 'dark' ? 'rgba(15, 23, 42, 0.8)' : 'rgba(248, 249, 252, 0.8)'
+      backgroundColor: theme === 'dark' ? 'rgba(15, 15, 16, 0.8)' : 'rgba(248, 249, 252, 0.8)'
     }}>
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <a href="/" className="flex items-center gap-2">
             <div className="flex size-10 items-center justify-center rounded-lg" style={{ 
-              background: 'linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)' 
+              background: 'linear-gradient(135deg, var(--landing-accent-primary) 0%, var(--landing-accent-secondary) 100%)' 
             }}>
               <span className="text-xl font-bold text-white">D</span>
             </div>

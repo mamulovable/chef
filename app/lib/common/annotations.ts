@@ -60,7 +60,7 @@ export type Usage = UsageAnnotation & {
   bedrockCacheReadInputTokens: number;
 };
 
-const providerValidator = z.enum(['Anthropic', 'Bedrock', 'OpenAI', 'XAI', 'Google', 'OpenRouter', 'Unknown']);
+const providerValidator = z.enum(['Anthropic', 'Bedrock', 'OpenAI', 'XAI', 'Google', 'OpenRouter', 'Hyperbolic', 'Unknown']);
 export type ProviderType = z.infer<typeof providerValidator>;
 
 export const annotationValidator = z.discriminatedUnion('type', [

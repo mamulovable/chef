@@ -25,6 +25,20 @@ export interface SystemPromptOptions {
   usingGoogle: boolean;
   resendProxyEnabled: boolean;
   enableResend: boolean;
+  templateContext?: {
+    _id: string;
+    name: string;
+    description: string;
+    category: string;
+    aiTags: string[];
+    metadata?: {
+      techStack?: string[];
+      features?: string[];
+      estimatedBuildTime?: string;
+      templatePath?: string;
+      snapshotFile?: string;
+    };
+  } | null;
 }
 
 export interface BoltArtifactData {

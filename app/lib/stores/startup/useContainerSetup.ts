@@ -23,22 +23,40 @@ import { chatSyncState } from './chatSyncState';
 import { FILE_EVENTS_DEBOUNCE_MS } from '~/lib/stores/files';
 import { setChefDebugProperty } from 'chef-agent/utils/chefDebug';
 
-const TEMPLATE_URL = '/template-snapshot-63fbe575.bin';
+const DEFAULT_TEMPLATE_URL = '/template-snapshot-63fbe575.bin';
 
-export function useNewChatContainerSetup() {
+export function useNewChatContainerSetup(templateId?: string | null) {
   const convex = useConvex();
   useEffect(() => {
     const runSetup = async () => {
       try {
         await waitForBootStepCompleted(ContainerBootState.STARTING);
-        await setupContainer(convex, { snapshotUrl: TEMPLATE_URL, allowNpmInstallFailure: false });
+        
+        let snapshotUrl = DEFAULT_TEMPLATE_URL;
+        
+        // If we have a template ID, try to get the template-specific snapshot
+        if (templateId) {
+          try {
+            const template = await convex.query(api.templates.getTemplate, { templateId });
+            if (template?.metadata?.snapshotFile) {
+              snapshotUrl = `/${template.metadata.snapshotFile}`;
+              console.log(`Using template-specific snapshot: ${snapshotUrl}`);
+            } else {
+              console.warn(`Template ${templateId} has no snapshot file, using default template`);
+            }
+          } catch (error) {
+            console.warn(`Failed to load template ${templateId}, using default template:`, error);
+          }
+        }
+        
+        await setupContainer(convex, { snapshotUrl, allowNpmInstallFailure: false });
       } catch (error: any) {
         toast.error('Failed to setup Chef environment. Try reloading the page.');
         setContainerBootState(ContainerBootState.ERROR, error);
       }
     };
     void runSetup();
-  }, [convex]);
+  }, [convex, templateId]);
 }
 
 export function useExistingChatContainerSetup(loadedChatId: string | undefined) {
@@ -57,7 +75,7 @@ export function useExistingChatContainerSetup(loadedChatId: string | undefined) 
         let snapshotUrl = await convex.query(api.snapshot.getSnapshotUrl, { chatId: loadedChatId, sessionId });
         if (!snapshotUrl) {
           console.warn(`Existing chat ${loadedChatId} has no snapshot. Loading the base template.`);
-          snapshotUrl = TEMPLATE_URL;
+          snapshotUrl = DEFAULT_TEMPLATE_URL;
         }
         await setupContainer(convex, { snapshotUrl, allowNpmInstallFailure: true });
       } catch (error: any) {

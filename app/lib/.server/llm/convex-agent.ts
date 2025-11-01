@@ -58,6 +58,20 @@ export async function convexAgent(args: {
   featureFlags: {
     enableResend: boolean;
   };
+  templateContext?: {
+    _id: string;
+    name: string;
+    description: string;
+    category: string;
+    aiTags: string[];
+    metadata?: {
+      techStack?: string[];
+      features?: string[];
+      estimatedBuildTime?: string;
+      templatePath?: string;
+      snapshotFile?: string;
+    };
+  } | null;
 }) {
   const {
     chatInitialId,
@@ -73,6 +87,7 @@ export async function convexAgent(args: {
     collapsedMessages,
     promptCharacterCounts,
     featureFlags,
+    templateContext,
   } = args;
   console.debug('Starting agent with model provider', modelProvider);
   if (userApiKey) {
@@ -91,6 +106,7 @@ export async function convexAgent(args: {
     usingGoogle: modelProvider == 'Google',
     resendProxyEnabled: getEnv('RESEND_PROXY_ENABLED') == '1',
     enableResend: featureFlags.enableResend,
+    templateContext,
   };
   const tools: ConvexToolSet = {
     deploy: deployTool,

@@ -3,6 +3,7 @@ import { useQuery, useMutation } from 'convex/react';
 import { api } from '@convex/_generated/api';
 import { Button } from '@ui/Button';
 import { TemplatePreview } from './TemplatePreview';
+import { useNavigate } from '@remix-run/react';
 import { 
   EyeIcon, 
   RocketIcon, 
@@ -52,6 +53,7 @@ const categoryColors = {
 };
 
 export function TemplatesPage() {
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [previewTemplate, setPreviewTemplate] = useState<Template | null>(null);
   
@@ -124,9 +126,9 @@ export function TemplatesPage() {
   ];
 
   const handleUseTemplate = (template: Template) => {
-    // Navigate to chat with template context
+    // Navigate to chat with template context using Remix navigate
     const prompt = `Build me a ${template.name.toLowerCase()} using the ${template.name} template. ${template.description}`;
-    window.location.href = `/chat?prompt=${encodeURIComponent(prompt)}&template=${template._id}`;
+    navigate(`/chat?prompt=${encodeURIComponent(prompt)}&template=${template._id}`);
   };
 
   const handlePreviewTemplate = (template: Template) => {
