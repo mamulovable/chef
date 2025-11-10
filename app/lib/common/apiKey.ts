@@ -32,6 +32,8 @@ export function hasApiKeySet(
     case 'meta-llama/llama-3.3-70b-instruct:free':
     case 'z-ai/glm-4.5-air:free':
     case 'openai/gpt-oss-20b:free':
+    case 'openrouter/polaris-alpha':
+    case 'minimax/minimax-m2:free':
       return !!apiKey.openrouter?.trim();
     case 'Qwen/Qwen3-Coder-480B-A35B-Instruct':
     case 'Qwen/Qwen2.5-Coder-32B-Instruct':

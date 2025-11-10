@@ -168,8 +168,18 @@ export const models: Partial<
     provider: 'openrouter',
     requireKey: true,
   },
-  'openai/gpt-oss-20b:free': {
+'openai/gpt-oss-20b:free': {
     name: 'GPT OSS 20B (Free)',
+    provider: 'openrouter',
+    requireKey: true,
+  },
+  'openrouter/polaris-alpha': {
+    name: 'Polaris Alpha',
+    provider: 'openrouter',
+    requireKey: true,
+  },
+  'minimax/minimax-m2:free': {
+    name: 'MiniMax M2 (Free)',
     provider: 'openrouter',
     requireKey: true,
   },

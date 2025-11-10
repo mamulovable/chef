@@ -233,6 +233,8 @@ export const Chat = memo(
 'meta-llama/llama-3.3-70b-instruct:free': { providerName: 'openrouter', apiKeyField: 'openrouter' },
 'z-ai/glm-4.5-air:free': { providerName: 'openrouter', apiKeyField: 'openrouter' },
           'openai/gpt-oss-20b:free': { providerName: 'openrouter', apiKeyField: 'openrouter' },
+          'openrouter/polaris-alpha': { providerName: 'openrouter', apiKeyField: 'openrouter' },
+          'minimax/minimax-m2:free': { providerName: 'openrouter', apiKeyField: 'openrouter' },
         };
 
         // Get provider info for the current model
@@ -355,7 +357,9 @@ export const Chat = memo(
         } else if (
           modelSelection === 'meta-llama/llama-3.3-70b-instruct:free' ||
           modelSelection === 'z-ai/glm-4.5-air:free' ||
-          modelSelection === 'openai/gpt-oss-20b:free'
+          modelSelection === 'openai/gpt-oss-20b:free' ||
+          modelSelection === 'openrouter/polaris-alpha' ||
+          modelSelection === 'minimax/minimax-m2:free'
         ) {
           modelProvider = 'OpenRouter';
           modelChoice = modelSelection;

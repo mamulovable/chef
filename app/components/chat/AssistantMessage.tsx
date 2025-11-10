@@ -187,6 +187,8 @@ function displayModel(modelInfo: { provider: ProviderType; model: string | undef
       return <div className="text-xs text-content-secondary">Generated with Google</div>;
     case 'OpenRouter':
       return <div className="text-xs text-content-secondary">Generated with OpenRouter</div>;
+    case 'Hyperbolic':
+      return <div className="text-xs text-content-secondary">Generated with Hyperbolic</div>;
     default: {
       const _exhaustiveCheck: never = modelInfo.provider;
       return null;

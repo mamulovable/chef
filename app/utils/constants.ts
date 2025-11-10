@@ -38,6 +38,8 @@ export type ModelSelection =
   | 'meta-llama/llama-3.3-70b-instruct:free'
   | 'z-ai/glm-4.5-air:free'
   | 'openai/gpt-oss-20b:free'
+  | 'openrouter/polaris-alpha'
+  | 'minimax/minimax-m2:free'
   | 'Qwen/Qwen3-Coder-480B-A35B-Instruct'
   | 'Qwen/Qwen2.5-Coder-32B-Instruct';
 
